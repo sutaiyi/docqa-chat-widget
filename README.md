@@ -2,7 +2,7 @@
 
 An embeddable AI-powered customer support widget. Add one line of code to any website — AI automatically learns your content and answers visitor questions 24/7.
 
-[English](#features) | [中文](#中文)
+**[Official Website](https://docqa.xyz)** | **[Documentation](https://docs.docqa.xyz)** | [English](#features) | [中文](#中文)
 
 ## Features
 
@@ -88,9 +88,10 @@ User clicks chat bubble
 | `chat-widget.css` | Widget styles (themes, responsive, dark mode, typing animation) |
 | `mobile.html` | Fullscreen mode for mobile WebView integration |
 
-## Documentation
+## Links
 
-- [Full Documentation](https://docs.docqa.xyz)
+- [Official Website](https://docqa.xyz) — Product overview, pricing, demos
+- [Full Documentation](https://docs.docqa.xyz) — Integration guides, API reference
 - [API Reference](https://docs.docqa.xyz/en/api)
 - [Quick Start Guide](https://docs.docqa.xyz/en/quickstart)
 
@@ -139,9 +140,10 @@ User clicks chat bubble
 | `data-mode` | 全屏模式（移动端） | `fullscreen` |
 | `data-exclude` | 隐藏客服的路由 | `/admin/*,/login` |
 
-### 文档
+### 相关链接
 
-- [完整文档](https://docs.docqa.xyz)
+- [官方网站](https://docqa.xyz) — 产品介绍、定价、演示
+- [完整文档](https://docs.docqa.xyz) — 接入指南、API 参考
 - [API 参考](https://docs.docqa.xyz/zh/api)
 - [快速开始](https://docs.docqa.xyz/zh/quickstart)
 
