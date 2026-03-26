@@ -164,17 +164,35 @@
 	};
 
 	// 检测语言：data-lang 属性 > <html lang> > navigator.language > 'en'
-	const LANG = (() => {
+	function detectLang() {
 		const attr = scriptTag && scriptTag.getAttribute('data-lang');
 		const htmlLang = document.documentElement.lang;
 		const raw = attr || htmlLang || navigator.language || 'en';
 		const code = raw.toLowerCase().split('-')[0]; // 'zh-CN' → 'zh'
 		return LANGS[code] ? code : 'en';
-	})();
+	}
+
+	let LANG = detectLang();
 
 	function t(key) {
 		return LANGS[LANG][key];
 	}
+
+	// 监听 <html lang> 变化，自动切换 Widget 语言
+	new MutationObserver(function() {
+		var newLang = detectLang();
+		if (newLang !== LANG) {
+			LANG = newLang;
+			// 刷新 Widget UI 文本
+			var widget = document.querySelector('chat-widget');
+			if (widget && widget.shadowRoot) {
+				var title = widget.shadowRoot.querySelector('.chat-header-title');
+				if (title) title.textContent = t('headerTitle');
+				var textarea = widget.shadowRoot.querySelector('textarea');
+				if (textarea) textarea.placeholder = t('inputPlaceholder');
+			}
+		}
+	}).observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
 
 	// 示例问题缓存
 	let _sampleQuestionsCache = null;
