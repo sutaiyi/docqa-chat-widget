@@ -945,7 +945,9 @@
 		}
 	}
 
-	customElements.define('chat-widget', ChatWidget);
+	if (!customElements.get('chat-widget')) {
+		customElements.define('chat-widget', ChatWidget);
+	}
 
 	// 路由排除：data-exclude 配置不显示 Widget 的路径（逗号分隔，支持 * 通配符）
 	const excludeAttr = scriptTag && scriptTag.getAttribute('data-exclude');
