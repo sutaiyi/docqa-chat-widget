@@ -38,6 +38,11 @@
 			themeToggle: 'Theme',
 			historyBtn: 'History',
 			settingsBtn: 'Settings',
+			quotaTitle: 'Chat limit reached',
+			quotaDesc: 'You have used {used} of {limit} chats this month.',
+			quotaUpgrade: 'Upgrade Plan →',
+			domainNotFoundTitle: 'Domain not configured',
+			domainNotFoundDesc: 'This domain is not linked to an active account.',
 			ragSyncLabel: 'Knowledge Base',
 			ragSyncLoading: 'Loading...',
 			ragSyncTime: 'Last updated: ',
@@ -78,6 +83,11 @@
 			themeToggle: '主题',
 			historyBtn: '历史会话',
 			settingsBtn: '设置',
+			quotaTitle: '对话次数已用完',
+			quotaDesc: '本月已使用 {used} / {limit} 次对话。',
+			quotaUpgrade: '升级套餐 →',
+			domainNotFoundTitle: '域名未配置',
+			domainNotFoundDesc: '此域名未关联到有效账户，请在控制台添加域名。',
 			ragSyncLabel: '知识库',
 			ragSyncLoading: '加载中...',
 			ragSyncTime: '最近更新：',
@@ -118,6 +128,11 @@
 			themeToggle: 'テーマ',
 			historyBtn: '履歴',
 			settingsBtn: '設定',
+			quotaTitle: 'チャット上限に達しました',
+			quotaDesc: '今月 {used} / {limit} 回の会話を使用しました。',
+			quotaUpgrade: 'プランをアップグレード →',
+			domainNotFoundTitle: 'ドメイン未設定',
+			domainNotFoundDesc: 'このドメインは有効なアカウントに関連付けられていません。',
 			ragSyncLabel: 'ナレッジベース',
 			ragSyncLoading: '読込中...',
 			ragSyncTime: '最終更新：',
@@ -158,6 +173,11 @@
 			themeToggle: '테마',
 			historyBtn: '기록',
 			settingsBtn: '설정',
+			quotaTitle: '대화 한도에 도달했습니다',
+			quotaDesc: '이번 달 {used} / {limit} 대화를 사용했습니다.',
+			quotaUpgrade: '플랜 업그레이드 →',
+			domainNotFoundTitle: '도메인 미설정',
+			domainNotFoundDesc: '이 도메인은 활성 계정에 연결되어 있지 않습니다.',
 			ragSyncLabel: '지식 베이스',
 			ragSyncLoading: '로딩 중...',
 			ragSyncTime: '최근 업데이트: ',
@@ -948,7 +968,15 @@
 						try {
 							const parsed = JSON.parse(payload);
 							if (parsed.error) {
-								fullText = parsed.error;
+								// 结构化错误处理
+								if (parsed.error.startsWith('[QUOTA_EXCEEDED]')) {
+									var parts = parsed.error.replace('[QUOTA_EXCEEDED]', '').split('/');
+									fullText = '__QUOTA_EXCEEDED__' + parts[0] + '/' + parts[1];
+								} else if (parsed.error.startsWith('[DOMAIN_NOT_FOUND]')) {
+									fullText = '__DOMAIN_NOT_FOUND__';
+								} else {
+									fullText = parsed.error;
+								}
 								break;
 							}
 							if (parsed.content) {
@@ -966,10 +994,28 @@
 					}
 				}
 
-				// 流结束后渲染 Markdown
-				await loadMarked();
-				msgDiv.innerHTML = renderMarkdown(fullText);
-				linkifyTextNodes(msgDiv);
+				// 流结束后渲染
+				if (fullText.startsWith('__QUOTA_EXCEEDED__')) {
+					var qParts = fullText.replace('__QUOTA_EXCEEDED__', '').split('/');
+					msgDiv.classList.remove('typing');
+					msgDiv.innerHTML = '<div class="quota-exceeded">' +
+						'<div class="quota-icon">⚠️</div>' +
+						'<div class="quota-title">' + t('quotaTitle') + '</div>' +
+						'<div class="quota-desc">' + t('quotaDesc').replace('{used}', qParts[0]).replace('{limit}', qParts[1]) + '</div>' +
+						'<a class="quota-upgrade" href="https://docqa.xyz/#pricing" target="_blank">' + t('quotaUpgrade') + '</a>' +
+					'</div>';
+				} else if (fullText === '__DOMAIN_NOT_FOUND__') {
+					msgDiv.classList.remove('typing');
+					msgDiv.innerHTML = '<div class="quota-exceeded">' +
+						'<div class="quota-icon">🔒</div>' +
+						'<div class="quota-title">' + t('domainNotFoundTitle') + '</div>' +
+						'<div class="quota-desc">' + t('domainNotFoundDesc') + '</div>' +
+					'</div>';
+				} else {
+					await loadMarked();
+					msgDiv.innerHTML = renderMarkdown(fullText);
+					linkifyTextNodes(msgDiv);
+				}
 				this.$.messages.scrollTop = this.$.messages.scrollHeight;
 
 				// 保存 AI 回复到 IndexedDB
