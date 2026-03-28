@@ -896,6 +896,28 @@
   background: rgba(26, 115, 232, 0.08);
   color: var(--accent);
 }
+/* ===== RAG Sync Info ===== */
+.settings-rag-info {
+  padding: 10px 12px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+.rag-status-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-secondary);
+  font-size: 12px;
+}
+.rag-status-row svg {
+  opacity: 0.5;
+  flex-shrink: 0;
+}
+.rag-updated-time {
+  line-height: 1.4;
+}
+
 /* btn-settings 在 header 内继承 header button 样式，无需额外覆盖 */
 .chat-settings .btn-settings-close {
   background: none;

@@ -38,6 +38,11 @@
 			themeToggle: 'Theme',
 			historyBtn: 'History',
 			settingsBtn: 'Settings',
+			ragSyncLabel: 'Knowledge Base',
+			ragSyncLoading: 'Loading...',
+			ragSyncTime: 'Last updated: ',
+			ragSyncPages: ' pages',
+			ragSyncNone: 'Not synced yet',
 			closeBtn: 'Close',
 			sendBtn: 'Send',
 			deleteBtn: 'Delete',
@@ -73,6 +78,11 @@
 			themeToggle: '主题',
 			historyBtn: '历史会话',
 			settingsBtn: '设置',
+			ragSyncLabel: '知识库',
+			ragSyncLoading: '加载中...',
+			ragSyncTime: '最近更新：',
+			ragSyncPages: ' 个页面',
+			ragSyncNone: '尚未同步',
 			closeBtn: '关闭',
 			sendBtn: '发送',
 			deleteBtn: '删除',
@@ -108,6 +118,11 @@
 			themeToggle: 'テーマ',
 			historyBtn: '履歴',
 			settingsBtn: '設定',
+			ragSyncLabel: 'ナレッジベース',
+			ragSyncLoading: '読込中...',
+			ragSyncTime: '最終更新：',
+			ragSyncPages: ' ページ',
+			ragSyncNone: '未同期',
 			closeBtn: '閉じる',
 			sendBtn: '送信',
 			deleteBtn: '削除',
@@ -143,6 +158,11 @@
 			themeToggle: '테마',
 			historyBtn: '기록',
 			settingsBtn: '설정',
+			ragSyncLabel: '지식 베이스',
+			ragSyncLoading: '로딩 중...',
+			ragSyncTime: '최근 업데이트: ',
+			ragSyncPages: ' 페이지',
+			ragSyncNone: '아직 동기화되지 않음',
 			closeBtn: '닫기',
 			sendBtn: '전송',
 			deleteBtn: '삭제',
@@ -600,6 +620,15 @@
 								</button>
 							</div>
 						</div>
+						<div class="settings-section">
+							<div class="settings-label">${t('ragSyncLabel')}</div>
+							<div class="settings-rag-info">
+								<div class="rag-status-row">
+									<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+									<span class="rag-updated-time">-</span>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			`;
@@ -966,6 +995,23 @@
 			this.$.settingsPanel.classList.remove('hidden');
 			this.$.sidebar.classList.add('hidden');
 			this._updateThemeButtons();
+			this._loadRagSyncInfo();
+		}
+
+		async _loadRagSyncInfo() {
+			var el = this.shadowRoot.querySelector('.rag-updated-time');
+			if (!el) return;
+			el.textContent = t('ragSyncLoading');
+			try {
+				var res = await api.cacheStatus();
+				if (res.updatedAt) {
+					el.textContent = t('ragSyncTime') + res.updatedAt + (res.pageCount ? ' (' + res.pageCount + t('ragSyncPages') + ')' : '');
+				} else {
+					el.textContent = t('ragSyncNone');
+				}
+			} catch (e) {
+				el.textContent = t('ragSyncNone');
+			}
 		}
 
 		_updateThemeButtons() {
