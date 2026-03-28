@@ -809,3 +809,102 @@
     border-radius: 12px;
   }
 }
+
+/* ===== Powered by ===== */
+.powered-by {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 6px 0;
+  text-decoration: none;
+  opacity: 0.35;
+  transition: opacity 0.2s;
+}
+.powered-by:hover {
+  opacity: 0.7;
+}
+.powered-by svg {
+  flex-shrink: 0;
+}
+.powered-by span {
+  font-size: 10px;
+  color: var(--text-secondary);
+  letter-spacing: 0.3px;
+}
+
+/* ===== Settings Panel ===== */
+.chat-settings {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 260px;
+  height: 100%;
+  background: var(--bg-primary);
+  border-left: 1px solid var(--border);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  animation: slideInRight 0.2s ease;
+}
+.chat-settings.hidden {
+  display: none;
+}
+@keyframes slideInRight {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+.settings-section {
+  padding: 16px;
+}
+.settings-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.settings-theme-row {
+  display: flex;
+  gap: 8px;
+}
+.settings-theme-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.settings-theme-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.settings-theme-btn.active {
+  border-color: var(--accent);
+  background: rgba(26, 115, 232, 0.08);
+  color: var(--accent);
+}
+.btn-settings {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-secondary);
+  padding: 4px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  transition: color 0.15s, background 0.15s;
+}
+.btn-settings:hover {
+  color: var(--text-primary);
+  background: var(--bg-secondary);
+}

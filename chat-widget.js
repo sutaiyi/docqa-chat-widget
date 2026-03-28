@@ -35,8 +35,9 @@
 			errorReply: 'Sorry, an error occurred. Please try again later.',
 			noSessions: 'No chat history',
 			historySessions: 'Chat History',
-			themeToggle: 'Toggle theme',
+			themeToggle: 'Theme',
 			historyBtn: 'History',
+			settingsBtn: 'Settings',
 			closeBtn: 'Close',
 			sendBtn: 'Send',
 			deleteBtn: 'Delete',
@@ -69,8 +70,9 @@
 			errorReply: '抱歉，发生了错误，请稍后重试。',
 			noSessions: '暂无历史会话',
 			historySessions: '历史会话',
-			themeToggle: '切换主题',
+			themeToggle: '主题',
 			historyBtn: '历史会话',
+			settingsBtn: '设置',
 			closeBtn: '关闭',
 			sendBtn: '发送',
 			deleteBtn: '删除',
@@ -103,8 +105,9 @@
 			errorReply: '申し訳ございません。エラーが発生しました。後ほどお試しください。',
 			noSessions: '履歴がありません',
 			historySessions: '会話履歴',
-			themeToggle: 'テーマ切替',
+			themeToggle: 'テーマ',
 			historyBtn: '履歴',
+			settingsBtn: '設定',
 			closeBtn: '閉じる',
 			sendBtn: '送信',
 			deleteBtn: '削除',
@@ -137,8 +140,9 @@
 			errorReply: '죄송합니다. 오류가 발생했습니다. 잠시 후 다시 시도해주세요.',
 			noSessions: '대화 기록이 없습니다',
 			historySessions: '대화 기록',
-			themeToggle: '테마 전환',
+			themeToggle: '테마',
 			historyBtn: '기록',
+			settingsBtn: '설정',
 			closeBtn: '닫기',
 			sendBtn: '전송',
 			deleteBtn: '삭제',
@@ -509,11 +513,11 @@
 					<div class="chat-header">
 						<img class="header-logo" src="${SITE_LOGO}" alt="" onerror="this.style.display='none'">
 						<span class="chat-header-title">${t('headerTitle')}</span>
-						<button class="btn-theme" title="${t('themeToggle')}">
-							<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-						</button>
 						<button class="btn-history" title="${t('historyBtn')}">
 							<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="10"/></svg>
+						</button>
+						<button class="btn-settings" title="${t('settingsBtn') || 'Settings'}">
+							<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
 						</button>
 						<button class="btn-close" title="${t('closeBtn')}">
 							<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
@@ -541,6 +545,10 @@
 						<div class="denied-text">${t('deniedContact')}</div>
 						<a class="denied-email" href="mailto:taiyisave@gmail.com?subject=${_emailSubject}&body=${_emailBody}">taiyisave@gmail.com</a>
 						<button class="denied-copy-btn" data-email="taiyisave@gmail.com">${t('copyEmail')}</button>
+						<a class="powered-by" href="https://docqa.xyz" target="_blank" rel="noopener">
+							<svg width="14" height="14" viewBox="0 0 40 40" fill="none"><rect width="40" height="40" rx="10" fill="#3b82f6"/><path d="M12 13h16a2 2 0 012 2v8a2 2 0 01-2 2h-4l-4 4-4-4h-4a2 2 0 01-2-2v-8a2 2 0 012-2z" fill="rgba(255,255,255,.95)"/></svg>
+							<span>Powered by DocQA</span>
+						</a>
 					</div>
 					<div class="chat-body">
 						<div class="chat-messages">
@@ -557,6 +565,10 @@
 								<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
 							</button>
 						</div>
+						<a class="powered-by" href="https://docqa.xyz" target="_blank" rel="noopener">
+							<svg width="14" height="14" viewBox="0 0 40 40" fill="none"><rect width="40" height="40" rx="10" fill="#3b82f6"/><path d="M12 13h16a2 2 0 012 2v8a2 2 0 01-2 2h-4l-4 4-4-4h-4a2 2 0 01-2-2v-8a2 2 0 012-2z" fill="rgba(255,255,255,.95)"/></svg>
+							<span>Powered by DocQA</span>
+						</a>
 					</div>
 					<div class="chat-sidebar hidden">
 						<div class="sidebar-header">
@@ -567,6 +579,27 @@
 						</div>
 						<button class="new-chat-btn">${t('newSession')}</button>
 						<div class="session-list"></div>
+					</div>
+					<div class="chat-settings hidden">
+						<div class="sidebar-header">
+							<span>${t('settingsBtn') || 'Settings'}</span>
+							<button class="btn-settings-close" title="${t('closeBtn')}">
+								<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+							</button>
+						</div>
+						<div class="settings-section">
+							<div class="settings-label">${t('themeToggle')}</div>
+							<div class="settings-theme-row">
+								<button class="settings-theme-btn" data-theme="light">
+									<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+									<span>Light</span>
+								</button>
+								<button class="settings-theme-btn" data-theme="dark">
+									<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+									<span>Dark</span>
+								</button>
+							</div>
+						</div>
 					</div>
 				</div>
 			`;
@@ -587,7 +620,8 @@
 				loadingStatus: this.shadowRoot.querySelector('.loading-status'),
 				loadingError: this.shadowRoot.querySelector('.loading-error'),
 				loadingRetryBtn: this.shadowRoot.querySelector('.loading-retry-btn'),
-				loadingProgress: this.shadowRoot.querySelector('.loading-progress')
+				loadingProgress: this.shadowRoot.querySelector('.loading-progress'),
+				settingsPanel: this.shadowRoot.querySelector('.chat-settings')
 			};
 		}
 
@@ -595,13 +629,26 @@
 			const $ = this.$;
 			$.fab.onclick = () => this._open();
 			this.shadowRoot.querySelector('.btn-close').onclick = () => this._close();
-			this.shadowRoot.querySelector('.btn-theme').onclick = () => {
-				this.classList.toggle('dark');
-				localStorage.setItem('chat-widget-theme', this.classList.contains('dark') ? 'dark' : 'light');
-			};
 			this.shadowRoot.querySelector('.btn-history').onclick = () => this._showSidebar();
+			this.shadowRoot.querySelector('.btn-settings').onclick = () => this._showSettings();
 			this.shadowRoot.querySelector('.btn-sidebar-close').onclick = () => $.sidebar.classList.add('hidden');
+			this.shadowRoot.querySelector('.btn-settings-close').onclick = () => $.settingsPanel.classList.add('hidden');
 			this.shadowRoot.querySelector('.new-chat-btn').onclick = () => this._prepareNewChat();
+
+			// 设置面板 — 主题切换
+			var _this = this;
+			this.shadowRoot.querySelectorAll('.settings-theme-btn').forEach(function(btn) {
+				btn.onclick = function() {
+					var theme = this.getAttribute('data-theme');
+					if (theme === 'dark') {
+						_this.classList.add('dark');
+					} else {
+						_this.classList.remove('dark');
+					}
+					localStorage.setItem('chat-widget-theme', theme);
+					_this._updateThemeButtons();
+				};
+			});
 
 			this.shadowRoot.querySelector('.denied-copy-btn').onclick = function () {
 				navigator.clipboard.writeText(this.dataset.email).then(() => {
@@ -915,7 +962,22 @@
 			}
 		}
 
+		_showSettings() {
+			this.$.settingsPanel.classList.remove('hidden');
+			this.$.sidebar.classList.add('hidden');
+			this._updateThemeButtons();
+		}
+
+		_updateThemeButtons() {
+			var isDark = this.classList.contains('dark');
+			this.shadowRoot.querySelectorAll('.settings-theme-btn').forEach(function(btn) {
+				var active = (btn.getAttribute('data-theme') === 'dark') === isDark;
+				btn.classList.toggle('active', active);
+			});
+		}
+
 		async _showSidebar() {
+			this.$.settingsPanel.classList.add('hidden');
 			this.$.sidebar.classList.remove('hidden');
 			const sessions = await db.listSessions();
 			this.$.sessionList.innerHTML = '';
