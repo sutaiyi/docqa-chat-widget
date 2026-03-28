@@ -132,6 +132,9 @@
   border-radius: 6px;
   opacity: 0.85;
   transition: opacity 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .chat-header button:hover {
@@ -893,7 +896,8 @@
   background: rgba(26, 115, 232, 0.08);
   color: var(--accent);
 }
-.btn-settings {
+/* btn-settings 在 header 内继承 header button 样式，无需额外覆盖 */
+.chat-settings .btn-settings-close {
   background: none;
   border: none;
   cursor: pointer;
@@ -904,7 +908,7 @@
   align-items: center;
   transition: color 0.15s, background 0.15s;
 }
-.btn-settings:hover {
+.chat-settings .btn-settings-close:hover {
   color: var(--text-primary);
   background: var(--bg-secondary);
 }
