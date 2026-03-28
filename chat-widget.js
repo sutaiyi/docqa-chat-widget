@@ -791,19 +791,17 @@
 		}
 
 		_disableForQuota(used, limit) {
-			// 在消息区域显示超限提示
-			var msgs = this.$.messages;
-			var empty = msgs.querySelector('.empty-state');
-			if (empty) empty.remove();
-			var card = document.createElement('div');
-			card.className = 'msg assistant';
-			card.innerHTML = '<div class="quota-exceeded">' +
+			// 隐藏聊天消息区和输入区，显示居中的超限提示
+			this.$.messages.innerHTML = '';
+			var wrap = document.createElement('div');
+			wrap.className = 'quota-exceeded-wrap';
+			wrap.innerHTML = '<div class="quota-exceeded">' +
 				'<div class="quota-icon">⚠️</div>' +
 				'<div class="quota-title">' + t('quotaTitle') + '</div>' +
 				'<div class="quota-desc">' + t('quotaDesc').replace('{used}', String(used || 0)).replace('{limit}', String(limit || 0)) + '</div>' +
 				'<a class="quota-upgrade" href="https://docqa.xyz/#pricing" target="_blank">' + t('quotaUpgrade') + '</a>' +
 			'</div>';
-			msgs.appendChild(card);
+			this.$.messages.appendChild(wrap);
 			// 禁用输入
 			this.$.textarea.disabled = true;
 			this.$.textarea.placeholder = t('quotaDisabled');
@@ -1043,25 +1041,19 @@
 				// 流结束后渲染
 				if (fullText.startsWith('__QUOTA_EXCEEDED__')) {
 					var qParts = fullText.replace('__QUOTA_EXCEEDED__', '').split('/');
-					msgDiv.classList.remove('typing');
-					msgDiv.innerHTML = '<div class="quota-exceeded">' +
-						'<div class="quota-icon">⚠️</div>' +
-						'<div class="quota-title">' + t('quotaTitle') + '</div>' +
-						'<div class="quota-desc">' + t('quotaDesc').replace('{used}', qParts[0]).replace('{limit}', qParts[1]) + '</div>' +
-						'<a class="quota-upgrade" href="https://docqa.xyz/#pricing" target="_blank">' + t('quotaUpgrade') + '</a>' +
-					'</div>';
-					// 禁用输入框
-					this.$.textarea.disabled = true;
-					this.$.textarea.placeholder = t('quotaDisabled');
-					this.$.sendBtn.disabled = true;
+					msgDiv.remove();
+					this._disableForQuota(parseInt(qParts[0]) || 0, parseInt(qParts[1]) || 0);
 				} else if (fullText === '__DOMAIN_NOT_FOUND__') {
-					msgDiv.classList.remove('typing');
-					msgDiv.innerHTML = '<div class="quota-exceeded">' +
+					msgDiv.remove();
+					this.$.messages.innerHTML = '';
+					var dWrap = document.createElement('div');
+					dWrap.className = 'quota-exceeded-wrap';
+					dWrap.innerHTML = '<div class="quota-exceeded">' +
 						'<div class="quota-icon">🔒</div>' +
 						'<div class="quota-title">' + t('domainNotFoundTitle') + '</div>' +
 						'<div class="quota-desc">' + t('domainNotFoundDesc') + '</div>' +
 					'</div>';
-					// 禁用输入框
+					this.$.messages.appendChild(dWrap);
 					this.$.textarea.disabled = true;
 					this.$.textarea.placeholder = t('domainNotFoundTitle');
 					this.$.sendBtn.disabled = true;
