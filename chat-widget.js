@@ -530,6 +530,24 @@
 				if (closeBtn) closeBtn.style.display = 'none';
 				this._open();
 			}
+
+			// 检查套餐是否允许自定义 Logo
+			this._checkLogoPermission();
+		}
+
+		async _checkLogoPermission() {
+			try {
+				var res = await api.cacheStatus();
+				if (res.customLogo === false) {
+					// 免费用户：强制使用 DocQA Logo
+					var docqaLogo = 'https://docqa.xyz/logo.svg';
+					var headerLogo = this.shadowRoot.querySelector('.header-logo');
+					if (headerLogo) { headerLogo.src = docqaLogo; headerLogo.style.display = ''; }
+					var loadingLogo = this.shadowRoot.querySelector('.loading-logo');
+					if (loadingLogo) { loadingLogo.src = docqaLogo; loadingLogo.style.display = ''; }
+				}
+			} catch (e) {}
+
 		}
 
 		async _loadCSS() {
