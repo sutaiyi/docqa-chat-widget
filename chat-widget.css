@@ -910,7 +910,8 @@
   display: flex;
   justify-content: center;
   padding: 40px 16px;
-  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 .quota-icon {
   font-size: 28px;
