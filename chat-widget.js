@@ -770,11 +770,15 @@
 				// 网络错误跳过验证（可能是开发模式）
 			}
 
-			// 检查缓存是否就绪
+			// 检查缓存是否就绪 + 配额
 			try {
 				const status = await api.cacheStatus();
 				if (status.status === 'denied') {
 					this._showDeniedView();
+				} else if (status.quotaExceeded) {
+					// 配额已超限，显示聊天界面但禁用输入
+					this._showChatView();
+					this._disableForQuota(status.monthlyChats, status.chatLimit);
 				} else if (status.ready) {
 					this._showChatView();
 				} else {
@@ -784,6 +788,26 @@
 			} catch {
 				this._showChatView();
 			}
+		}
+
+		_disableForQuota(used, limit) {
+			// 在消息区域显示超限提示
+			var msgs = this.$.messages;
+			var empty = msgs.querySelector('.empty-state');
+			if (empty) empty.remove();
+			var card = document.createElement('div');
+			card.className = 'msg assistant';
+			card.innerHTML = '<div class="quota-exceeded">' +
+				'<div class="quota-icon">⚠️</div>' +
+				'<div class="quota-title">' + t('quotaTitle') + '</div>' +
+				'<div class="quota-desc">' + t('quotaDesc').replace('{used}', String(used || 0)).replace('{limit}', String(limit || 0)) + '</div>' +
+				'<a class="quota-upgrade" href="https://docqa.xyz/#pricing" target="_blank">' + t('quotaUpgrade') + '</a>' +
+			'</div>';
+			msgs.appendChild(card);
+			// 禁用输入
+			this.$.textarea.disabled = true;
+			this.$.textarea.placeholder = t('quotaDisabled');
+			this.$.sendBtn.disabled = true;
 		}
 
 		_showDeniedView() {
