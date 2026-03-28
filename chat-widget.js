@@ -41,6 +41,7 @@
 			quotaTitle: 'Chat limit reached',
 			quotaDesc: 'You have used {used} of {limit} chats this month.',
 			quotaUpgrade: 'Upgrade Plan →',
+			quotaDisabled: 'Chat limit reached. Upgrade to continue.',
 			domainNotFoundTitle: 'Domain not configured',
 			domainNotFoundDesc: 'This domain is not linked to an active account.',
 			ragSyncLabel: 'Knowledge Base',
@@ -86,6 +87,7 @@
 			quotaTitle: '对话次数已用完',
 			quotaDesc: '本月已使用 {used} / {limit} 次对话。',
 			quotaUpgrade: '升级套餐 →',
+			quotaDisabled: '对话次数已用完，升级套餐以继续使用。',
 			domainNotFoundTitle: '域名未配置',
 			domainNotFoundDesc: '此域名未关联到有效账户，请在控制台添加域名。',
 			ragSyncLabel: '知识库',
@@ -131,6 +133,7 @@
 			quotaTitle: 'チャット上限に達しました',
 			quotaDesc: '今月 {used} / {limit} 回の会話を使用しました。',
 			quotaUpgrade: 'プランをアップグレード →',
+			quotaDisabled: 'チャット上限に達しました。アップグレードして続行してください。',
 			domainNotFoundTitle: 'ドメイン未設定',
 			domainNotFoundDesc: 'このドメインは有効なアカウントに関連付けられていません。',
 			ragSyncLabel: 'ナレッジベース',
@@ -176,6 +179,7 @@
 			quotaTitle: '대화 한도에 도달했습니다',
 			quotaDesc: '이번 달 {used} / {limit} 대화를 사용했습니다.',
 			quotaUpgrade: '플랜 업그레이드 →',
+			quotaDisabled: '대화 한도에 도달했습니다. 업그레이드하여 계속하세요.',
 			domainNotFoundTitle: '도메인 미설정',
 			domainNotFoundDesc: '이 도메인은 활성 계정에 연결되어 있지 않습니다.',
 			ragSyncLabel: '지식 베이스',
@@ -1022,6 +1026,10 @@
 						'<div class="quota-desc">' + t('quotaDesc').replace('{used}', qParts[0]).replace('{limit}', qParts[1]) + '</div>' +
 						'<a class="quota-upgrade" href="https://docqa.xyz/#pricing" target="_blank">' + t('quotaUpgrade') + '</a>' +
 					'</div>';
+					// 禁用输入框
+					this.$.textarea.disabled = true;
+					this.$.textarea.placeholder = t('quotaDisabled');
+					this.$.sendBtn.disabled = true;
 				} else if (fullText === '__DOMAIN_NOT_FOUND__') {
 					msgDiv.classList.remove('typing');
 					msgDiv.innerHTML = '<div class="quota-exceeded">' +
@@ -1029,6 +1037,10 @@
 						'<div class="quota-title">' + t('domainNotFoundTitle') + '</div>' +
 						'<div class="quota-desc">' + t('domainNotFoundDesc') + '</div>' +
 					'</div>';
+					// 禁用输入框
+					this.$.textarea.disabled = true;
+					this.$.textarea.placeholder = t('domainNotFoundTitle');
+					this.$.sendBtn.disabled = true;
 				} else {
 					await loadMarked();
 					msgDiv.innerHTML = renderMarkdown(fullText);
