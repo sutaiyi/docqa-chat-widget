@@ -1,8 +1,16 @@
 (function () {
 	'use strict';
 
-	const scriptTag = document.currentScript;
-	const SERVER = (scriptTag && scriptTag.getAttribute('data-server')) || window.location.origin;
+	// 支持 document.currentScript（同步加载）和动态注入（Streamlit 等场景）
+	const scriptTag = document.currentScript || document.getElementById('docqa-widget-script') || document.querySelector('script[src*="chat-widget.js"]');
+	const SERVER = (() => {
+		if (scriptTag && scriptTag.getAttribute('data-server')) return scriptTag.getAttribute('data-server');
+		// 从脚本 src 属性推导 server 地址
+		if (scriptTag && scriptTag.src) {
+			try { var u = new URL(scriptTag.src); return u.origin; } catch (e) {}
+		}
+		return window.location.origin;
+	})();
 	// data-base-url 支持逗号分隔多个 URL，第一个为主域名
 	const BASE_URLS = ((scriptTag && scriptTag.getAttribute('data-base-url')) || window.location.origin)
 		.split(',').map(function(u) { return u.trim().replace(/\/+$/, ''); }).filter(Boolean);
