@@ -73,11 +73,7 @@
 			loadingRetryText: 'Retrying...',
 			deniedTitle: 'Unauthorized',
 			deniedText: (domain) => `The domain <strong class="denied-domain">${domain}</strong> is not authorized to use this service.`,
-			deniedContact: 'To request access, please contact:',
-			copyEmail: 'Copy Email',
-			copiedEmail: 'Copied',
-			emailSubject: (domain) => `AI Support Authorization Request - ${domain}`,
-			emailBody: (domain) => `Hello, I would like to request AI support service authorization for the domain ${domain}.\n\nCompany/Project:\nContact:\n`,
+			deniedCta: 'Get Started →',
 			sampleQuestionsLoading: 'Loading suggestions...'
 		},
 		zh: {
@@ -119,11 +115,7 @@
 			loadingRetryText: '正在重新尝试...',
 			deniedTitle: '未授权使用',
 			deniedText: (domain) => `当前域名 <strong class="denied-domain">${domain}</strong> 未获得智能客服服务授权。`,
-			deniedContact: '如需开通，请联系：',
-			copyEmail: '复制邮箱',
-			copiedEmail: '已复制',
-			emailSubject: (domain) => `智能客服授权申请 - ${domain}`,
-			emailBody: (domain) => `您好，我希望为域名 ${domain} 申请智能客服服务授权。\n\n公司/项目名称：\n联系人：\n`,
+			deniedCta: '立即开通 →',
 			sampleQuestionsLoading: '正在生成推荐问题...'
 		},
 		ja: {
@@ -165,11 +157,7 @@
 			loadingRetryText: '再試行中...',
 			deniedTitle: '未認証',
 			deniedText: (domain) => `ドメイン <strong class="denied-domain">${domain}</strong> はサービスの利用が許可されていません。`,
-			deniedContact: 'ご利用を希望される方はお問い合わせください：',
-			copyEmail: 'メールをコピー',
-			copiedEmail: 'コピー済み',
-			emailSubject: (domain) => `AIサポート認証申請 - ${domain}`,
-			emailBody: (domain) => `お世話になっております。ドメイン ${domain} のAIサポートサービス認証を申請いたします。\n\n会社/プロジェクト名：\n担当者：\n`,
+			deniedCta: '利用を開始 →',
 			sampleQuestionsLoading: '提案を読み込み中...'
 		},
 		ko: {
@@ -211,11 +199,7 @@
 			loadingRetryText: '다시 시도 중...',
 			deniedTitle: '미인증',
 			deniedText: (domain) => `도메인 <strong class="denied-domain">${domain}</strong>은(는) 서비스 사용 권한이 없습니다.`,
-			deniedContact: '이용을 원하시면 연락해주세요:',
-			copyEmail: '이메일 복사',
-			copiedEmail: '복사됨',
-			emailSubject: (domain) => `AI 지원 인증 요청 - ${domain}`,
-			emailBody: (domain) => `안녕하세요, 도메인 ${domain}에 대한 AI 지원 서비스 인증을 요청합니다.\n\n회사/프로젝트명:\n담당자:\n`,
+			deniedCta: '시작하기 →',
 			sampleQuestionsLoading: '추천 질문 로딩 중...'
 		}
 	};
@@ -544,23 +528,17 @@
 				this._open();
 			}
 
-			// 检查套餐是否允许自定义 Logo
-			this._checkLogoPermission();
 		}
 
-		async _checkLogoPermission() {
-			try {
-				var res = await api.cacheStatus();
-				if (res.customLogo === false) {
-					// 免费用户：强制使用 DocQA Logo
-					var docqaLogo = 'https://docqa.xyz/logo.svg';
-					var headerLogo = this.shadowRoot.querySelector('.header-logo');
-					if (headerLogo) { headerLogo.src = docqaLogo; headerLogo.style.display = ''; }
-					var loadingLogo = this.shadowRoot.querySelector('.loading-logo');
-					if (loadingLogo) { loadingLogo.src = docqaLogo; loadingLogo.style.display = ''; }
-				}
-			} catch (e) {}
-
+		_applyLogoPolicy(customLogo) {
+			if (customLogo !== false) return; // 付费用户不限制
+			// 免费用户：强制使用平台 Logo（从站点配置的主域名拿）
+			var siteBase = this._siteUrl || 'https://docqa.xyz';
+			var platformLogo = siteBase.replace(/\/+$/, '') + '/favicon.svg';
+			var headerLogo = this.shadowRoot.querySelector('.header-logo');
+			if (headerLogo) { headerLogo.src = platformLogo; headerLogo.style.display = ''; }
+			var loadingLogo = this.shadowRoot.querySelector('.loading-logo');
+			if (loadingLogo) { loadingLogo.src = platformLogo; loadingLogo.style.display = ''; }
 		}
 
 		async _loadCSS() {
@@ -572,8 +550,7 @@
 
 		_buildDOM() {
 			const wrap = document.createElement('div');
-			const _emailSubject = encodeURIComponent(t('emailSubject')(DOMAIN));
-			const _emailBody = encodeURIComponent(t('emailBody')(DOMAIN));
+			const _siteUrl = 'https://docqa.xyz'; // 默认值，运行时由 _siteUrl 覆盖
 			wrap.innerHTML = `
 				<button class="chat-fab" aria-label="${t('headerTitle')}">
 					<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -613,9 +590,7 @@
 						</div>
 						<div class="denied-title">${t('deniedTitle')}</div>
 						<div class="denied-text">${t('deniedText')(DOMAIN)}</div>
-						<div class="denied-text">${t('deniedContact')}</div>
-						<a class="denied-email" href="mailto:taiyisave@gmail.com?subject=${_emailSubject}&body=${_emailBody}">taiyisave@gmail.com</a>
-						<button class="denied-copy-btn" data-email="taiyisave@gmail.com">${t('copyEmail')}</button>
+						<a class="denied-cta-btn" href="${_siteUrl}" target="_blank" rel="noopener">${t('deniedCta')}</a>
 						<a class="powered-by" href="https://docqa.xyz" target="_blank" rel="noopener">
 							<svg width="14" height="14" viewBox="0 0 40 40" fill="none"><rect width="40" height="40" rx="10" fill="#3b82f6"/><path d="M12 13h16a2 2 0 012 2v8a2 2 0 01-2 2h-4l-4 4-4-4h-4a2 2 0 01-2-2v-8a2 2 0 012-2z" fill="rgba(255,255,255,.95)"/></svg>
 							<span>Powered by DocQA</span>
@@ -658,7 +633,7 @@
 								<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
 							</button>
 						</div>
-						<div class="settings-section">
+						<div class="settings-section settings-theme">
 							<div class="settings-label">${t('themeToggle')}</div>
 							<div class="settings-theme-row">
 								<button class="settings-theme-btn" data-theme="light">
@@ -730,15 +705,6 @@
 				};
 			});
 
-			this.shadowRoot.querySelector('.denied-copy-btn').onclick = function () {
-				navigator.clipboard.writeText(this.dataset.email).then(() => {
-					this.textContent = t('copiedEmail');
-					setTimeout(() => {
-						this.textContent = t('copyEmail');
-					}, 2000);
-				});
-			};
-
 			$.loadingRetryBtn.onclick = async () => {
 				$.loadingError.classList.add('hidden');
 				$.loadingRetryBtn.classList.add('hidden');
@@ -782,6 +748,10 @@
 			// 检查缓存是否就绪 + 配额
 			try {
 				const status = await api.cacheStatus();
+				// 记录官网地址 + 主题权限
+				if (status.siteUrl) this._siteUrl = status.siteUrl;
+				this._applyThemePolicy(status.themeSwitch);
+				this._applyLogoPolicy(status.customLogo);
 				if (status.status === 'denied') {
 					this._showDeniedView();
 				} else if (status.quotaExceeded) {
@@ -808,7 +778,7 @@
 				'<div class="quota-icon">⚠️</div>' +
 				'<div class="quota-title">' + t('quotaTitle') + '</div>' +
 				'<div class="quota-desc">' + t('quotaDesc').replace('{used}', String(used || 0)).replace('{limit}', String(limit || 0)) + '</div>' +
-				'<a class="quota-upgrade" href="https://docqa.xyz/#pricing" target="_blank">' + t('quotaUpgrade') + '</a>' +
+				'<a class="quota-upgrade" href="' + (this._siteUrl || 'https://docqa.xyz') + '/dashboard/upgrade" target="_blank">' + t('quotaUpgrade') + '</a>' +
 			'</div>';
 			this.$.messages.appendChild(wrap);
 			// 禁用输入
@@ -817,7 +787,19 @@
 			this.$.sendBtn.disabled = true;
 		}
 
+		_applyThemePolicy(themeSwitch) {
+			if (themeSwitch === true) return; // 付费用户不限制
+			// 免费用户：强制 light 主题，隐藏主题切换按钮
+			this.classList.remove('dark');
+			localStorage.setItem('chat-widget-theme', 'light');
+			var themeSection = this.shadowRoot.querySelector('.settings-theme');
+			if (themeSection) themeSection.style.display = 'none';
+		}
+
 		_showDeniedView() {
+			// 动态更新官网链接
+			var ctaBtn = this.shadowRoot.querySelector('.denied-cta-btn');
+			if (ctaBtn && this._siteUrl) ctaBtn.href = this._siteUrl;
 			this.$.deniedView.classList.remove('hidden');
 			this.$.loadingView.classList.add('hidden');
 			this.$.chatBody.classList.add('hidden');
@@ -1106,7 +1088,14 @@
 			try {
 				var res = await api.cacheStatus();
 				if (res.updatedAt) {
-					el.textContent = t('ragSyncTime') + res.updatedAt + (res.pageCount ? ' (' + res.pageCount + t('ragSyncPages') + ')' : '');
+					var localTime = (() => {
+						try {
+							var d = new Date(res.updatedAt.replace(' ', 'T') + 'Z');
+							if (isNaN(d.getTime())) return res.updatedAt;
+							return d.toLocaleString();
+						} catch(e) { return res.updatedAt; }
+					})();
+					el.textContent = t('ragSyncTime') + localTime;
 				} else {
 					el.textContent = t('ragSyncNone');
 				}

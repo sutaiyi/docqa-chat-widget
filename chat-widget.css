@@ -305,38 +305,22 @@
   word-break: break-all;
 }
 
-.denied-email {
+.denied-cta-btn {
   display: inline-block;
-  margin-top: 4px;
-  padding: 8px 16px;
+  margin-top: 12px;
+  padding: 10px 24px;
   background: var(--accent);
   color: #fff;
   text-decoration: none;
   border-radius: 8px;
   font-size: 14px;
-  font-weight: 500;
-  transition: opacity 0.15s;
+  font-weight: 600;
+  transition: opacity 0.15s, transform 0.15s;
 }
 
-.denied-email:hover {
-  opacity: 0.85;
-}
-
-.denied-copy-btn {
-  margin-top: 2px;
-  padding: 6px 14px;
-  border: 1px solid var(--border-color);
-  border-radius: 6px;
-  background: var(--bg-primary);
-  color: var(--text-secondary);
-  font-size: 12px;
-  cursor: pointer;
-  transition: background 0.15s, color 0.15s;
-}
-
-.denied-copy-btn:hover {
-  background: var(--hover-bg);
-  color: var(--text-primary);
+.denied-cta-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
 }
 
 /* ===== 聊天主体（消息区+输入区） ===== */
