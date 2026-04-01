@@ -32,6 +32,16 @@
 		return window.location.origin + '/favicon.ico';
 	})();
 
+	// ============ 匿名访客 ID ============
+	const VISITOR_ID = (() => {
+		let id = localStorage.getItem('docqa-visitor-id');
+		if (!id) {
+			id = 'v_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+			localStorage.setItem('docqa-visitor-id', id);
+		}
+		return id;
+	})();
+
 	// ============ i18n 多语言 ============
 	const LANGS = {
 		en: {
@@ -74,7 +84,36 @@
 			deniedTitle: 'Unauthorized',
 			deniedText: (domain) => `The domain <strong class="denied-domain">${domain}</strong> is not authorized to use this service.`,
 			deniedCta: 'Get Started →',
-			sampleQuestionsLoading: 'Loading suggestions...'
+			sampleQuestionsLoading: 'Loading suggestions...',
+			humanAgentContact: 'Contact our support team:',
+			humanAgentWaiting: 'Connecting to a human agent...',
+			humanAgentQueue: (pos) => `Queue position: ${pos}`,
+			humanAgentEstWait: (min) => `Estimated wait: ~${min} min`,
+			humanAgentConnected: 'Human agent connected',
+			humanAgentDisconnected: 'Agent disconnected',
+			returnToAi: 'Return to AI',
+			humanAgentNotified: 'Our team has been notified and will reach out to you shortly.',
+			phone: 'Phone',
+			email: 'Email',
+			wechat: 'WeChat',
+			telegram: 'Telegram',
+			idleWarning: 'No messages for a while. Connection will close in 1 minute.',
+			idleTimeout: 'Session closed due to inactivity.',
+			keepAlive: 'Stay connected',
+			switchToAi: 'Switch to AI',
+			switchToHuman: 'Human Agent',
+			modeAi: 'AI Support',
+			modeHumanConnected: 'Human agent connected',
+			modeHumanWaiting: 'Waiting for agent...',
+			restoring: 'Restoring connection...',
+			switchConfirm: 'You are in a live chat. Switching will disconnect. Continue?',
+			ticketTitle: 'Submit a Ticket',
+			ticketContact: 'Your contact (phone/email/WeChat)',
+			ticketDesc: 'Describe your issue',
+			ticketSubmit: 'Submit Ticket',
+			ticketSubmitting: 'Submitting...',
+			ticketSuccess: 'Ticket submitted! Our team will reach out to you shortly.',
+			ticketError: 'Submission failed. Please try again.'
 		},
 		zh: {
 			headerTitle: 'AI 智能客服',
@@ -116,7 +155,36 @@
 			deniedTitle: '未授权使用',
 			deniedText: (domain) => `当前域名 <strong class="denied-domain">${domain}</strong> 未获得智能客服服务授权。`,
 			deniedCta: '立即开通 →',
-			sampleQuestionsLoading: '正在生成推荐问题...'
+			sampleQuestionsLoading: '正在生成推荐问题...',
+			humanAgentContact: '请通过以下方式联系客服：',
+			humanAgentWaiting: '正在连接人工客服...',
+			humanAgentQueue: (pos) => `排队位置：第 ${pos} 位`,
+			humanAgentEstWait: (min) => `预计等待：约 ${min} 分钟`,
+			humanAgentConnected: '人工客服已接入',
+			humanAgentDisconnected: '客服已断开连接',
+			returnToAi: '返回 AI 客服',
+			humanAgentNotified: '我们已收到您的请求，客服将尽快与您联系。',
+			phone: '电话',
+			email: '邮箱',
+			wechat: '微信',
+			telegram: 'Telegram',
+			idleWarning: '长时间未发送消息，连接将在 1 分钟后自动断开',
+			idleTimeout: '会话因超时已自动断开',
+			keepAlive: '继续会话',
+			switchToAi: '切换到 AI',
+			switchToHuman: '转人工',
+			modeAi: 'AI 客服',
+			modeHumanConnected: '人工客服已连接',
+			modeHumanWaiting: '等待人工客服...',
+			restoring: '正在恢复连接...',
+			switchConfirm: '正在人工客服中，切换将断开连接，是否继续？',
+			ticketTitle: '提交工单',
+			ticketContact: '您的联系方式（手机/邮箱/微信）',
+			ticketDesc: '请描述您的问题',
+			ticketSubmit: '提交工单',
+			ticketSubmitting: '提交中...',
+			ticketSuccess: '工单已提交，客服将尽快通过您留下的联系方式与您联系。',
+			ticketError: '提交失败，请稍后重试'
 		},
 		ja: {
 			headerTitle: 'AI サポート',
@@ -158,7 +226,36 @@
 			deniedTitle: '未認証',
 			deniedText: (domain) => `ドメイン <strong class="denied-domain">${domain}</strong> はサービスの利用が許可されていません。`,
 			deniedCta: '利用を開始 →',
-			sampleQuestionsLoading: '提案を読み込み中...'
+			sampleQuestionsLoading: '提案を読み込み中...',
+			humanAgentContact: 'サポートチームの連絡先：',
+			humanAgentWaiting: 'オペレーターに接続中...',
+			humanAgentQueue: (pos) => `待機位置：${pos}番目`,
+			humanAgentEstWait: (min) => `推定待ち時間：約${min}分`,
+			humanAgentConnected: 'オペレーターが接続しました',
+			humanAgentDisconnected: 'オペレーターが切断しました',
+			returnToAi: 'AIに戻る',
+			humanAgentNotified: 'リクエストを受け付けました。担当者が間もなくご連絡いたします。',
+			phone: '電話',
+			email: 'メール',
+			wechat: 'WeChat',
+			telegram: 'Telegram',
+			idleWarning: 'メッセージがありません。1分後に接続が切断されます。',
+			idleTimeout: 'タイムアウトにより切断されました。',
+			keepAlive: '接続を維持',
+			switchToAi: 'AIに切替',
+			switchToHuman: 'オペレーター',
+			modeAi: 'AIサポート',
+			modeHumanConnected: 'オペレーター接続中',
+			modeHumanWaiting: 'オペレーター待機中...',
+			restoring: '接続を復元中...',
+			switchConfirm: 'ライブチャット中です。切替すると切断されます。続けますか？',
+			ticketTitle: 'チケットを送信',
+			ticketContact: '連絡先（電話/メール/WeChat）',
+			ticketDesc: '問題の説明',
+			ticketSubmit: 'チケットを送信',
+			ticketSubmitting: '送信中...',
+			ticketSuccess: 'チケットが送信されました。担当者が間もなくご連絡いたします。',
+			ticketError: '送信に失敗しました。もう一度お試しください。'
 		},
 		ko: {
 			headerTitle: 'AI 고객지원',
@@ -200,7 +297,36 @@
 			deniedTitle: '미인증',
 			deniedText: (domain) => `도메인 <strong class="denied-domain">${domain}</strong>은(는) 서비스 사용 권한이 없습니다.`,
 			deniedCta: '시작하기 →',
-			sampleQuestionsLoading: '추천 질문 로딩 중...'
+			sampleQuestionsLoading: '추천 질문 로딩 중...',
+			humanAgentContact: '고객지원 연락처:',
+			humanAgentWaiting: '상담원에 연결 중...',
+			humanAgentQueue: (pos) => `대기 위치: ${pos}번째`,
+			humanAgentEstWait: (min) => `예상 대기 시간: 약 ${min}분`,
+			humanAgentConnected: '상담원이 연결되었습니다',
+			humanAgentDisconnected: '상담원이 연결을 종료했습니다',
+			returnToAi: 'AI로 돌아가기',
+			humanAgentNotified: '요청이 접수되었습니다. 곧 연락드리겠습니다.',
+			phone: '전화',
+			email: '이메일',
+			wechat: 'WeChat',
+			telegram: 'Telegram',
+			idleWarning: '메시지가 없습니다. 1분 후 연결이 종료됩니다.',
+			idleTimeout: '시간 초과로 세션이 종료되었습니다.',
+			keepAlive: '연결 유지',
+			switchToAi: 'AI로 전환',
+			switchToHuman: '상담원 연결',
+			modeAi: 'AI 지원',
+			modeHumanConnected: '상담원 연결됨',
+			modeHumanWaiting: '상담원 대기 중...',
+			restoring: '연결 복원 중...',
+			switchConfirm: '라이브 채팅 중입니다. 전환하면 연결이 끊어집니다. 계속하시겠습니까?',
+			ticketTitle: '티켓 제출',
+			ticketContact: '연락처 (전화/이메일/WeChat)',
+			ticketDesc: '문제를 설명해 주세요',
+			ticketSubmit: '티켓 제출',
+			ticketSubmitting: '제출 중...',
+			ticketSuccess: '티켓이 제출되었습니다. 곧 연락드리겠습니다.',
+			ticketError: '제출에 실패했습니다. 다시 시도해 주세요.'
 		}
 	};
 
@@ -414,7 +540,7 @@
 			const res = await fetch(`${SERVER}/api/chat`, {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ message, history, domain: DOMAIN, extra_urls: ALL_BASE_URLS, stream: false })
+				body: JSON.stringify({ message, history, domain: DOMAIN, extra_urls: ALL_BASE_URLS, stream: false, visitor_id: VISITOR_ID })
 			});
 			return res.json();
 		},
@@ -422,7 +548,7 @@
 			return fetch(`${SERVER}/api/chat`, {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ message, history, domain: DOMAIN, extra_urls: ALL_BASE_URLS, stream: true })
+				body: JSON.stringify({ message, history, domain: DOMAIN, extra_urls: ALL_BASE_URLS, stream: true, visitor_id: VISITOR_ID })
 			});
 		},
 		async cacheStatus(retry = false) {
@@ -430,8 +556,37 @@
 			const params = `domain=${encodeURIComponent(DOMAIN)}${retry ? '&retry=true' : ''}${eu}`;
 			const res = await fetch(`${SERVER}/api/cache-status?${params}`);
 			return res.json();
+		},
+		async getHumanAgentConfig() {
+			try {
+				const res = await fetch(`${SERVER}/api/human-agent-config?domain=${encodeURIComponent(DOMAIN)}`);
+				return res.json();
+			} catch { return { mode: 'disabled' }; }
+		},
+		async requestHumanAgent(visitorName, visitorInfo) {
+			try {
+				const res = await fetch(`${SERVER}/api/human-agent-request`, {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify({ domain: DOMAIN, visitor_id: VISITOR_ID, visitor_name: visitorName || '', visitor_info: visitorInfo || '' })
+				});
+				return res.json();
+			} catch { return { error: 'network_error' }; }
+		},
+		async submitTicket(contact, description) {
+			try {
+				const res = await fetch(`${SERVER}/api/submit-ticket`, {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify({ domain: DOMAIN, visitor_id: VISITOR_ID, contact, description })
+				});
+				return res.json();
+			} catch { return { error: 'network_error' }; }
 		}
 	};
+
+	// ============ 人工客服关键词检测 ============
+	const HUMAN_AGENT_TRIGGERS = ['人工', '人工客服', '转人工', 'human', 'human agent', 'talk to human', 'talk to agent', 'real person', 'オペレーター', '人間', '상담원', '상담사'];
 
 	// ============ 加载 marked.js ============
 	let _markedReady = null;
@@ -596,6 +751,11 @@
 							<span>Powered by DocQA</span>
 						</a>
 					</div>
+					<div class="mode-bar hidden">
+						<span class="mode-dot"></span>
+						<span class="mode-label"></span>
+						<button class="mode-switch-btn"></button>
+					</div>
 					<div class="chat-body">
 						<div class="chat-messages">
 							<div class="empty-state">
@@ -665,6 +825,7 @@
 				win: this.shadowRoot.querySelector('.chat-window'),
 				loadingView: this.shadowRoot.querySelector('.loading-view'),
 				deniedView: this.shadowRoot.querySelector('.denied-view'),
+				modeBar: this.shadowRoot.querySelector('.mode-bar'),
 				chatBody: this.shadowRoot.querySelector('.chat-body'),
 				messages: this.shadowRoot.querySelector('.chat-messages'),
 				textarea: this.shadowRoot.querySelector('textarea'),
@@ -817,6 +978,37 @@
 			this.$.chatBody.classList.remove('hidden');
 			if (!this.currentSessionId) this._prepareNewChat();
 			this.$.textarea.focus();
+			// 初始化人工客服模式栏 + 恢复断线会话
+			this._initHumanAgentMode();
+		}
+
+		async _initHumanAgentMode() {
+			if (this._haInitDone) return;
+			this._haInitDone = true;
+			try {
+				this._haConfig = await api.getHumanAgentConfig();
+			} catch { this._haConfig = null; }
+			// 检查是否有未结束的 live chat session 需要恢复
+			try {
+				const savedSession = sessionStorage.getItem('docqa-live-session');
+				if (savedSession && this._haConfig && this._haConfig.mode === 'live_chat') {
+					const statusRes = await fetch(`${SERVER}/api/live-chat-status?session_id=${encodeURIComponent(savedSession)}`).then(r => r.json());
+					if (statusRes.status === 'pending' || statusRes.status === 'active') {
+						// 恢复连接
+						this._liveChatActive = true;
+						this._liveChatSessionId = savedSession;
+						const div = document.createElement('div');
+						div.className = 'msg assistant ha-status';
+						div.textContent = t('restoring');
+						this.$.messages.appendChild(div);
+						this._connectLiveChat(savedSession);
+						return;
+					} else {
+						sessionStorage.removeItem('docqa-live-session');
+					}
+				}
+			} catch {}
+			this._updateModeBar();
 		}
 
 		_startPolling() {
@@ -879,6 +1071,10 @@
 		}
 
 		_prepareNewChat() {
+			if (this._liveChatActive) {
+				if (!confirm(t('switchConfirm'))) return;
+				this._returnToAi();
+			}
 			this.currentSessionId = null;
 			this.$.sidebar.classList.add('hidden');
 			this._clearMessages();
@@ -927,8 +1123,13 @@
 			const empty = this.$.messages.querySelector('.empty-state');
 			if (empty) empty.remove();
 			const div = document.createElement('div');
-			div.className = `msg ${role}`;
-			if (role === 'assistant') {
+			// agent 角色（人工客服）复用 assistant 样式，加标记
+			const cssRole = role === 'agent' ? 'assistant' : role;
+			div.className = `msg ${cssRole}`;
+			if (role === 'agent') {
+				// 人工客服消息：纯文本 + 标记
+				div.innerHTML = `<div class="ha-agent-tag">👤</div>${this._esc(content)}`;
+			} else if (role === 'assistant') {
 				loadMarked().then(() => {
 					div.innerHTML = renderMarkdown(content);
 					linkifyTextNodes(div);
@@ -943,10 +1144,295 @@
 			return div;
 		}
 
+		async _handleHumanAgentTrigger(config) {
+			try {
+				if (!config || config.mode === 'disabled') return;
+
+				// 确保有本地会话（用于存储人工客服消息到历史）
+				if (!this.currentSessionId) {
+					const session = await db.createSession();
+					this.currentSessionId = session.id;
+					await db.updateSessionTitle(session.id, t('humanAgentConnected'));
+				}
+
+				if (config.mode === 'ticket') {
+					this._showTicketForm();
+					return;
+				}
+
+				// 通知后端有人请求人工客服（contact_info / live_chat）
+				const result = await api.requestHumanAgent('', JSON.stringify({ page: window.location.href, lang: LANG }));
+
+				if (config.mode === 'contact_info' && config.contacts) {
+					// 联系方式模式：展示联系方式卡片
+					const c = config.contacts;
+					const items = [];
+					if (c.phone) items.push(`<div class="ha-contact-item"><span class="ha-icon">📞</span><span class="ha-label">${t('phone')}</span><a href="tel:${c.phone}">${c.phone}</a></div>`);
+					if (c.email) items.push(`<div class="ha-contact-item"><span class="ha-icon">📧</span><span class="ha-label">${t('email')}</span><a href="mailto:${c.email}">${c.email}</a></div>`);
+					if (c.wechat) items.push(`<div class="ha-contact-item"><span class="ha-icon">💬</span><span class="ha-label">${t('wechat')}</span><span>${c.wechat}</span></div>`);
+					if (c.telegram) items.push(`<div class="ha-contact-item"><span class="ha-icon">✈️</span><span class="ha-label">${t('telegram')}</span><a href="https://t.me/${c.telegram.replace('@','')}" target="_blank">${c.telegram}</a></div>`);
+
+					const cardHtml = `<div class="ha-contact-card"><div class="ha-contact-title">${t('humanAgentContact')}</div>${items.join('')}<div class="ha-contact-note">${t('humanAgentNotified')}</div></div>`;
+					const div = document.createElement('div');
+					div.className = 'msg assistant';
+					div.innerHTML = cardHtml;
+					this.$.messages.appendChild(div);
+					this.$.messages.scrollTop = this.$.messages.scrollHeight;
+				} else if (config.mode === 'live_chat' && result && result.session_id) {
+					// 在线客服模式：展示联系方式 + 排队等待
+					this._liveChatActive = true;
+					this._liveChatSessionId = result.session_id;
+					const queuePos = result.queue_position || 1;
+					const estWait = result.estimated_wait || 2;
+
+					const queueText = typeof t('humanAgentQueue') === 'function' ? t('humanAgentQueue')(queuePos) : `#${queuePos}`;
+					const waitText = typeof t('humanAgentEstWait') === 'function' ? t('humanAgentEstWait')(estWait) : `~${estWait} min`;
+
+					// 联系方式卡片（如果有配置）
+					let contactHtml = '';
+					if (config.contacts) {
+						const c = config.contacts;
+						const items = [];
+						if (c.phone) items.push(`<div class="ha-contact-item"><span class="ha-icon">📞</span><span class="ha-label">${t('phone')}</span><a href="tel:${c.phone}">${c.phone}</a></div>`);
+						if (c.email) items.push(`<div class="ha-contact-item"><span class="ha-icon">📧</span><span class="ha-label">${t('email')}</span><a href="mailto:${c.email}">${c.email}</a></div>`);
+						if (c.wechat) items.push(`<div class="ha-contact-item"><span class="ha-icon">💬</span><span class="ha-label">${t('wechat')}</span><span>${c.wechat}</span></div>`);
+						if (c.telegram) items.push(`<div class="ha-contact-item"><span class="ha-icon">✈️</span><span class="ha-label">${t('telegram')}</span><a href="https://t.me/${c.telegram.replace('@','')}" target="_blank">${c.telegram}</a></div>`);
+						if (items.length > 0) {
+							contactHtml = `<div class="ha-contact-card" style="margin-bottom:12px"><div class="ha-contact-title">${t('humanAgentContact')}</div>${items.join('')}</div>`;
+						}
+					}
+
+					const waitDiv = document.createElement('div');
+					waitDiv.className = 'msg assistant ha-waiting';
+					waitDiv.innerHTML = `${contactHtml}<div class="ha-waiting-content"><span class="typing-dots"><span></span><span></span><span></span></span> ${t('humanAgentWaiting')}</div><div class="ha-queue-info"><div>${queueText}</div><div>${waitText}</div></div>`;
+					this.$.messages.appendChild(waitDiv);
+					this.$.messages.scrollTop = this.$.messages.scrollHeight;
+
+					// 启动 WebSocket 连接
+					this._connectLiveChat(result.session_id);
+				}
+			} catch (err) {
+				console.error('[DocQA] Human agent trigger error:', err);
+				// 出错时在聊天中提示
+				const div = document.createElement('div');
+				div.className = 'msg assistant';
+				div.textContent = t('errorReply');
+				this.$.messages.appendChild(div);
+				this.$.messages.scrollTop = this.$.messages.scrollHeight;
+			}
+		}
+
+		_showTicketForm() {
+			const div = document.createElement('div');
+			div.className = 'msg assistant';
+			div.innerHTML = `<div class="ha-ticket-form">
+				<div class="ha-ticket-title">${t('ticketTitle')}</div>
+				<input class="ha-ticket-input" type="text" placeholder="${t('ticketContact')}" />
+				<textarea class="ha-ticket-textarea" placeholder="${t('ticketDesc')}" rows="3"></textarea>
+				<button class="ha-ticket-btn">${t('ticketSubmit')}</button>
+			</div>`;
+			this.$.messages.appendChild(div);
+			this.$.messages.scrollTop = this.$.messages.scrollHeight;
+
+			const btn = div.querySelector('.ha-ticket-btn');
+			const contactInput = div.querySelector('.ha-ticket-input');
+			const descInput = div.querySelector('.ha-ticket-textarea');
+
+			btn.onclick = async () => {
+				const contact = contactInput.value.trim();
+				const desc = descInput.value.trim();
+				if (!contact || !desc) return;
+				btn.textContent = t('ticketSubmitting');
+				btn.disabled = true;
+				const res = await api.submitTicket(contact, desc);
+				if (res.ok) {
+					div.innerHTML = `<div class="ha-ticket-form"><div class="ha-ticket-success">${t('ticketSuccess')}</div></div>`;
+					// 存到历史
+					if (this.currentSessionId) {
+						await db.addMessage(this.currentSessionId, 'assistant', t('ticketSuccess'));
+					}
+				} else {
+					btn.textContent = t('ticketSubmit');
+					btn.disabled = false;
+					const err = document.createElement('div');
+					err.className = 'ha-ticket-error';
+					err.textContent = t('ticketError');
+					div.querySelector('.ha-ticket-form').appendChild(err);
+					setTimeout(() => err.remove(), 3000);
+				}
+			};
+		}
+
+		_connectLiveChat(sessionId) {
+			// 持久化会话 ID（刷新恢复用）
+			try { sessionStorage.setItem('docqa-live-session', sessionId); } catch {}
+
+			const wsUrl = SERVER.replace(/^http/, 'ws') + '/ws/live-chat/' + sessionId + '?role=visitor';
+			this._ws = new WebSocket(wsUrl);
+			this._updateModeBar();
+
+			this._ws.onopen = () => { this._updateModeBar(); };
+
+			this._ws.onmessage = (event) => {
+				try {
+					const data = JSON.parse(event.data);
+					if (data.type === 'status' && data.content === 'agent_connected') {
+						const waiting = this.$.messages.querySelector('.ha-waiting');
+						if (waiting) waiting.remove();
+						const div = document.createElement('div');
+						div.className = 'msg assistant ha-status';
+						div.textContent = t('humanAgentConnected');
+						this.$.messages.appendChild(div);
+						this.$.messages.scrollTop = this.$.messages.scrollHeight;
+						this._updateModeBar();
+					} else if (data.type === 'message' && data.sender === 'agent') {
+						this._appendMsg('agent', data.content);
+						if (this.currentSessionId) db.addMessage(this.currentSessionId, 'agent', data.content).catch(() => {});
+					} else if (data.type === 'status' && data.content === 'agent_disconnected') {
+						this._returnToAi();
+						this._showStatusCard('disconnected');
+					} else if (data.type === 'status' && data.content === 'idle_warning') {
+						this._showStatusCard('idle_warning');
+					} else if (data.type === 'status' && data.content === 'idle_timeout') {
+						this._liveChatActive = false;
+						this._showStatusCard('idle_timeout');
+						this._updateModeBar();
+						try { sessionStorage.removeItem('docqa-live-session'); } catch {}
+					}
+				} catch {}
+			};
+
+			this._ws.onclose = () => {
+				if (this._liveChatActive) {
+					this._returnToAi();
+					this._showStatusCard('disconnected');
+				}
+				try { sessionStorage.removeItem('docqa-live-session'); } catch {}
+			};
+		}
+
+		_returnToAi() {
+			this._liveChatActive = false;
+			this._liveChatSessionId = null;
+			if (this._ws) { this._ws.close(); this._ws = null; }
+			try { sessionStorage.removeItem('docqa-live-session'); } catch {}
+			this._updateModeBar();
+		}
+
+		_showStatusCard(type) {
+			// 移除之前的状态卡片
+			const old = this.$.messages.querySelector('.ha-status-card');
+			if (old) old.remove();
+
+			const div = document.createElement('div');
+			div.className = 'msg assistant';
+
+			if (type === 'disconnected') {
+				div.innerHTML = `<div class="ha-status-card">
+					<div class="ha-status-icon">👋</div>
+					<div class="ha-status-text">${t('humanAgentDisconnected')}</div>
+					<div class="ha-status-hint">${t('modeAi')}</div>
+				</div>`;
+			} else if (type === 'idle_warning') {
+				div.innerHTML = `<div class="ha-status-card ha-status-warning">
+					<div class="ha-status-icon">⏰</div>
+					<div class="ha-status-text">${t('idleWarning')}</div>
+					<button class="ha-status-btn">${t('keepAlive')}</button>
+				</div>`;
+				div.querySelector('.ha-status-btn').onclick = () => {
+					if (this._ws && this._ws.readyState === WebSocket.OPEN) {
+						this._ws.send(JSON.stringify({ type: 'heartbeat' }));
+					}
+					div.remove();
+				};
+			} else if (type === 'idle_timeout') {
+				div.innerHTML = `<div class="ha-status-card">
+					<div class="ha-status-icon">⏱️</div>
+					<div class="ha-status-text">${t('idleTimeout')}</div>
+					<div class="ha-status-hint">${t('modeAi')}</div>
+				</div>`;
+				this._returnToAi();
+			}
+
+			this.$.messages.appendChild(div);
+			this.$.messages.scrollTop = this.$.messages.scrollHeight;
+		}
+
+		_updateModeBar() {
+			const bar = this.$.modeBar;
+			if (!bar) return;
+			if (!this._haConfig || this._haConfig.mode === 'disabled') {
+				bar.classList.add('hidden');
+				return;
+			}
+			bar.classList.remove('hidden');
+			const dot = bar.querySelector('.mode-dot');
+			const label = bar.querySelector('.mode-label');
+			const btn = bar.querySelector('.mode-switch-btn');
+
+			if (this._liveChatActive && this._ws && this._ws.readyState === WebSocket.OPEN) {
+				// 人工客服已连接
+				dot.className = 'mode-dot green';
+				label.textContent = t('modeHumanConnected');
+				btn.textContent = t('switchToAi');
+				btn.onclick = () => this._returnToAi();
+			} else if (this._liveChatActive) {
+				// 等待中
+				dot.className = 'mode-dot yellow';
+				label.textContent = t('modeHumanWaiting');
+				btn.textContent = t('switchToAi');
+				btn.onclick = () => this._returnToAi();
+			} else {
+				// AI 模式
+				dot.className = 'mode-dot blue';
+				label.textContent = t('modeAi');
+				btn.textContent = t('switchToHuman');
+				btn.onclick = async () => {
+					try {
+						const config = this._haConfig || await api.getHumanAgentConfig();
+						if (config && config.mode && config.mode !== 'disabled') {
+							this._appendMsg('user', t('switchToHuman'));
+							await this._handleHumanAgentTrigger(config);
+						}
+					} catch {}
+				};
+			}
+		}
+
 		async _send() {
 			if (this.sending) return;
 			const text = this.$.textarea.value.trim();
 			if (!text) return;
+
+			// 人工客服关键词检测
+			const lowerText = text.toLowerCase().trim();
+			const isHumanTrigger = HUMAN_AGENT_TRIGGERS.some(kw => lowerText === kw || lowerText.includes(kw));
+			if (isHumanTrigger && !this._liveChatActive) {
+				try {
+					const haConfig = await api.getHumanAgentConfig();
+					if (haConfig && haConfig.mode && haConfig.mode !== 'disabled') {
+						this.$.textarea.value = '';
+						this.$.textarea.style.height = 'auto';
+						this._appendMsg('user', text);
+						await this._handleHumanAgentTrigger(haConfig);
+						return;
+					}
+				} catch (e) {
+					console.error('[DocQA] Human agent config check failed:', e);
+				}
+				// disabled 或出错：继续走正常 AI 流程
+			}
+
+			// 在线客服模式：通过 WebSocket 发送
+			if (this._liveChatActive && this._ws && this._ws.readyState === WebSocket.OPEN) {
+				this.$.textarea.value = '';
+				this.$.textarea.style.height = 'auto';
+				this._appendMsg('user', text);
+				this._ws.send(JSON.stringify({ type: 'message', content: text, sender: 'visitor' }));
+				// 保存到 IndexedDB
+				if (this.currentSessionId) db.addMessage(this.currentSessionId, 'user', text).catch(() => {});
+				return;
+			}
 
 			this.$.textarea.value = '';
 			this.$.textarea.style.height = 'auto';
@@ -1142,6 +1628,10 @@
 		}
 
 		async _switchSession(id) {
+			if (this._liveChatActive) {
+				if (!confirm(t('switchConfirm'))) return;
+				this._returnToAi();
+			}
 			this.currentSessionId = id;
 			this.$.sidebar.classList.add('hidden');
 			this.$.messages.innerHTML = '';
