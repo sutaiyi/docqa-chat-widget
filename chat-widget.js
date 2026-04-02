@@ -6,7 +6,9 @@
 	// 脚本源域名（始终从 script src 推导，用于 CSS 等静态资源）
 	const SCRIPT_ORIGIN = (() => {
 		if (scriptTag && scriptTag.src) {
-			try { return new URL(scriptTag.src).origin; } catch (e) {}
+			try {
+				return new URL(scriptTag.src).origin;
+			} catch (e) {}
 		}
 		return window.location.origin;
 	})();
@@ -14,7 +16,11 @@
 	const SERVER = (scriptTag && scriptTag.getAttribute('data-server')) || SCRIPT_ORIGIN;
 	// data-base-url 支持逗号分隔多个 URL，第一个为主域名
 	const BASE_URLS = ((scriptTag && scriptTag.getAttribute('data-base-url')) || window.location.origin)
-		.split(',').map(function(u) { return u.trim().replace(/\/+$/, ''); }).filter(Boolean);
+		.split(',')
+		.map(function (u) {
+			return u.trim().replace(/\/+$/, '');
+		})
+		.filter(Boolean);
 	const BASE_URL = BASE_URLS[0] || window.location.origin;
 	const DOMAIN = (() => {
 		try {
@@ -346,7 +352,7 @@
 	}
 
 	// 监听 <html lang> 变化，自动切换 Widget 语言
-	new MutationObserver(function() {
+	new MutationObserver(function () {
 		var newLang = detectLang();
 		if (newLang !== LANG) {
 			LANG = newLang;
@@ -561,7 +567,9 @@
 			try {
 				const res = await fetch(`${SERVER}/api/human-agent-config?domain=${encodeURIComponent(DOMAIN)}`);
 				return res.json();
-			} catch { return { mode: 'disabled' }; }
+			} catch {
+				return { mode: 'disabled' };
+			}
 		},
 		async requestHumanAgent(visitorName, visitorInfo) {
 			try {
@@ -571,7 +579,9 @@
 					body: JSON.stringify({ domain: DOMAIN, visitor_id: VISITOR_ID, visitor_name: visitorName || '', visitor_info: visitorInfo || '' })
 				});
 				return res.json();
-			} catch { return { error: 'network_error' }; }
+			} catch {
+				return { error: 'network_error' };
+			}
 		},
 		async submitTicket(contact, description) {
 			try {
@@ -581,7 +591,9 @@
 					body: JSON.stringify({ domain: DOMAIN, visitor_id: VISITOR_ID, contact, description })
 				});
 				return res.json();
-			} catch { return { error: 'network_error' }; }
+			} catch {
+				return { error: 'network_error' };
+			}
 		}
 	};
 
@@ -682,18 +694,23 @@
 				if (closeBtn) closeBtn.style.display = 'none';
 				this._open();
 			}
-
 		}
 
 		_applyLogoPolicy(customLogo) {
 			if (customLogo !== false) return; // 付费用户不限制
 			// 免费用户：强制使用平台 Logo（从站点配置的主域名拿）
-			var siteBase = this._siteUrl || 'https://docqa.xyz';
+			var siteBase = this._siteUrl || 'https://www.webnav.ai';
 			var platformLogo = siteBase.replace(/\/+$/, '') + '/favicon.svg';
 			var headerLogo = this.shadowRoot.querySelector('.header-logo');
-			if (headerLogo) { headerLogo.src = platformLogo; headerLogo.style.display = ''; }
+			if (headerLogo) {
+				headerLogo.src = platformLogo;
+				headerLogo.style.display = '';
+			}
 			var loadingLogo = this.shadowRoot.querySelector('.loading-logo');
-			if (loadingLogo) { loadingLogo.src = platformLogo; loadingLogo.style.display = ''; }
+			if (loadingLogo) {
+				loadingLogo.src = platformLogo;
+				loadingLogo.style.display = '';
+			}
 		}
 
 		async _loadCSS() {
@@ -705,7 +722,7 @@
 
 		_buildDOM() {
 			const wrap = document.createElement('div');
-			const _siteUrl = 'https://docqa.xyz'; // 默认值，运行时由 _siteUrl 覆盖
+			const _siteUrl = 'https://www.webnav.ai'; // 默认值，运行时由 _siteUrl 覆盖
 			wrap.innerHTML = `
 				<button class="chat-fab" aria-label="${t('headerTitle')}">
 					<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -746,9 +763,9 @@
 						<div class="denied-title">${t('deniedTitle')}</div>
 						<div class="denied-text">${t('deniedText')(DOMAIN)}</div>
 						<a class="denied-cta-btn" href="${_siteUrl}" target="_blank" rel="noopener">${t('deniedCta')}</a>
-						<a class="powered-by" href="https://docqa.xyz" target="_blank" rel="noopener">
+						<a class="powered-by" href="https://www.webnav.ai" target="_blank" rel="noopener">
 							<svg width="14" height="14" viewBox="0 0 40 40" fill="none"><rect width="40" height="40" rx="10" fill="#3b82f6"/><path d="M12 13h16a2 2 0 012 2v8a2 2 0 01-2 2h-4l-4 4-4-4h-4a2 2 0 01-2-2v-8a2 2 0 012-2z" fill="rgba(255,255,255,.95)"/></svg>
-							<span>Powered by DocQA</span>
+							<span>Powered by Webnav.ai</span>
 						</a>
 					</div>
 					<div class="mode-bar hidden">
@@ -771,9 +788,9 @@
 								<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
 							</button>
 						</div>
-						<a class="powered-by" href="https://docqa.xyz" target="_blank" rel="noopener">
+						<a class="powered-by" href="https://www.webnav.ai" target="_blank" rel="noopener">
 							<svg width="14" height="14" viewBox="0 0 40 40" fill="none"><rect width="40" height="40" rx="10" fill="#3b82f6"/><path d="M12 13h16a2 2 0 012 2v8a2 2 0 01-2 2h-4l-4 4-4-4h-4a2 2 0 01-2-2v-8a2 2 0 012-2z" fill="rgba(255,255,255,.95)"/></svg>
-							<span>Powered by DocQA</span>
+							<span>Powered by Webnav.ai</span>
 						</a>
 					</div>
 					<div class="chat-sidebar hidden">
@@ -853,8 +870,8 @@
 
 			// 设置面板 — 主题切换
 			var _this = this;
-			this.shadowRoot.querySelectorAll('.settings-theme-btn').forEach(function(btn) {
-				btn.onclick = function() {
+			this.shadowRoot.querySelectorAll('.settings-theme-btn').forEach(function (btn) {
+				btn.onclick = function () {
 					var theme = this.getAttribute('data-theme');
 					if (theme === 'dark') {
 						_this.classList.add('dark');
@@ -935,12 +952,23 @@
 			this.$.messages.innerHTML = '';
 			var wrap = document.createElement('div');
 			wrap.className = 'quota-exceeded-wrap';
-			wrap.innerHTML = '<div class="quota-exceeded">' +
+			wrap.innerHTML =
+				'<div class="quota-exceeded">' +
 				'<div class="quota-icon">⚠️</div>' +
-				'<div class="quota-title">' + t('quotaTitle') + '</div>' +
-				'<div class="quota-desc">' + t('quotaDesc').replace('{used}', String(used || 0)).replace('{limit}', String(limit || 0)) + '</div>' +
-				'<a class="quota-upgrade" href="' + (this._siteUrl || 'https://docqa.xyz') + '/dashboard/upgrade" target="_blank">' + t('quotaUpgrade') + '</a>' +
-			'</div>';
+				'<div class="quota-title">' +
+				t('quotaTitle') +
+				'</div>' +
+				'<div class="quota-desc">' +
+				t('quotaDesc')
+					.replace('{used}', String(used || 0))
+					.replace('{limit}', String(limit || 0)) +
+				'</div>' +
+				'<a class="quota-upgrade" href="' +
+				(this._siteUrl || 'https://www.webnav.ai') +
+				'/dashboard/upgrade" target="_blank">' +
+				t('quotaUpgrade') +
+				'</a>' +
+				'</div>';
 			this.$.messages.appendChild(wrap);
 			// 禁用输入
 			this.$.textarea.disabled = true;
@@ -987,12 +1015,14 @@
 			this._haInitDone = true;
 			try {
 				this._haConfig = await api.getHumanAgentConfig();
-			} catch { this._haConfig = null; }
+			} catch {
+				this._haConfig = null;
+			}
 			// 检查是否有未结束的 live chat session 需要恢复
 			try {
 				const savedSession = sessionStorage.getItem('docqa-live-session');
 				if (savedSession && this._haConfig && this._haConfig.mode === 'live_chat') {
-					const statusRes = await fetch(`${SERVER}/api/live-chat-status?session_id=${encodeURIComponent(savedSession)}`).then(r => r.json());
+					const statusRes = await fetch(`${SERVER}/api/live-chat-status?session_id=${encodeURIComponent(savedSession)}`).then((r) => r.json());
 					if (statusRes.status === 'pending' || statusRes.status === 'active') {
 						// 恢复连接
 						this._liveChatActive = true;
@@ -1107,11 +1137,9 @@
 			}
 
 			const picked = pickRandom(allQuestions, 3);
-			container.innerHTML = picked.map(q =>
-				`<button class="sample-question">${q}</button>`
-			).join('');
+			container.innerHTML = picked.map((q) => `<button class="sample-question">${q}</button>`).join('');
 
-			container.querySelectorAll('.sample-question').forEach(btn => {
+			container.querySelectorAll('.sample-question').forEach((btn) => {
 				btn.onclick = () => {
 					this.$.textarea.value = btn.textContent;
 					this._send();
@@ -1167,10 +1195,15 @@
 					// 联系方式模式：展示联系方式卡片
 					const c = config.contacts;
 					const items = [];
-					if (c.phone) items.push(`<div class="ha-contact-item"><span class="ha-icon">📞</span><span class="ha-label">${t('phone')}</span><a href="tel:${c.phone}">${c.phone}</a></div>`);
-					if (c.email) items.push(`<div class="ha-contact-item"><span class="ha-icon">📧</span><span class="ha-label">${t('email')}</span><a href="mailto:${c.email}">${c.email}</a></div>`);
+					if (c.phone)
+						items.push(`<div class="ha-contact-item"><span class="ha-icon">📞</span><span class="ha-label">${t('phone')}</span><a href="tel:${c.phone}">${c.phone}</a></div>`);
+					if (c.email)
+						items.push(`<div class="ha-contact-item"><span class="ha-icon">📧</span><span class="ha-label">${t('email')}</span><a href="mailto:${c.email}">${c.email}</a></div>`);
 					if (c.wechat) items.push(`<div class="ha-contact-item"><span class="ha-icon">💬</span><span class="ha-label">${t('wechat')}</span><span>${c.wechat}</span></div>`);
-					if (c.telegram) items.push(`<div class="ha-contact-item"><span class="ha-icon">✈️</span><span class="ha-label">${t('telegram')}</span><a href="https://t.me/${c.telegram.replace('@','')}" target="_blank">${c.telegram}</a></div>`);
+					if (c.telegram)
+						items.push(
+							`<div class="ha-contact-item"><span class="ha-icon">✈️</span><span class="ha-label">${t('telegram')}</span><a href="https://t.me/${c.telegram.replace('@', '')}" target="_blank">${c.telegram}</a></div>`
+						);
 
 					const cardHtml = `<div class="ha-contact-card"><div class="ha-contact-title">${t('humanAgentContact')}</div>${items.join('')}<div class="ha-contact-note">${t('humanAgentNotified')}</div></div>`;
 					const div = document.createElement('div');
@@ -1193,10 +1226,15 @@
 					if (config.contacts) {
 						const c = config.contacts;
 						const items = [];
-						if (c.phone) items.push(`<div class="ha-contact-item"><span class="ha-icon">📞</span><span class="ha-label">${t('phone')}</span><a href="tel:${c.phone}">${c.phone}</a></div>`);
-						if (c.email) items.push(`<div class="ha-contact-item"><span class="ha-icon">📧</span><span class="ha-label">${t('email')}</span><a href="mailto:${c.email}">${c.email}</a></div>`);
+						if (c.phone)
+							items.push(`<div class="ha-contact-item"><span class="ha-icon">📞</span><span class="ha-label">${t('phone')}</span><a href="tel:${c.phone}">${c.phone}</a></div>`);
+						if (c.email)
+							items.push(`<div class="ha-contact-item"><span class="ha-icon">📧</span><span class="ha-label">${t('email')}</span><a href="mailto:${c.email}">${c.email}</a></div>`);
 						if (c.wechat) items.push(`<div class="ha-contact-item"><span class="ha-icon">💬</span><span class="ha-label">${t('wechat')}</span><span>${c.wechat}</span></div>`);
-						if (c.telegram) items.push(`<div class="ha-contact-item"><span class="ha-icon">✈️</span><span class="ha-label">${t('telegram')}</span><a href="https://t.me/${c.telegram.replace('@','')}" target="_blank">${c.telegram}</a></div>`);
+						if (c.telegram)
+							items.push(
+								`<div class="ha-contact-item"><span class="ha-icon">✈️</span><span class="ha-label">${t('telegram')}</span><a href="https://t.me/${c.telegram.replace('@', '')}" target="_blank">${c.telegram}</a></div>`
+							);
 						if (items.length > 0) {
 							contactHtml = `<div class="ha-contact-card" style="margin-bottom:12px"><div class="ha-contact-title">${t('humanAgentContact')}</div>${items.join('')}</div>`;
 						}
@@ -1212,7 +1250,7 @@
 					this._connectLiveChat(result.session_id);
 				}
 			} catch (err) {
-				console.error('[DocQA] Human agent trigger error:', err);
+				console.error('[Webnav.ai] Human agent trigger error:', err);
 				// 出错时在聊天中提示
 				const div = document.createElement('div');
 				div.className = 'msg assistant';
@@ -1265,13 +1303,17 @@
 
 		_connectLiveChat(sessionId) {
 			// 持久化会话 ID（刷新恢复用）
-			try { sessionStorage.setItem('docqa-live-session', sessionId); } catch {}
+			try {
+				sessionStorage.setItem('docqa-live-session', sessionId);
+			} catch {}
 
 			const wsUrl = SERVER.replace(/^http/, 'ws') + '/ws/live-chat/' + sessionId + '?role=visitor';
 			this._ws = new WebSocket(wsUrl);
 			this._updateModeBar();
 
-			this._ws.onopen = () => { this._updateModeBar(); };
+			this._ws.onopen = () => {
+				this._updateModeBar();
+			};
 
 			this._ws.onmessage = (event) => {
 				try {
@@ -1297,7 +1339,9 @@
 						this._liveChatActive = false;
 						this._showStatusCard('idle_timeout');
 						this._updateModeBar();
-						try { sessionStorage.removeItem('docqa-live-session'); } catch {}
+						try {
+							sessionStorage.removeItem('docqa-live-session');
+						} catch {}
 					}
 				} catch {}
 			};
@@ -1307,15 +1351,22 @@
 					this._returnToAi();
 					this._showStatusCard('disconnected');
 				}
-				try { sessionStorage.removeItem('docqa-live-session'); } catch {}
+				try {
+					sessionStorage.removeItem('docqa-live-session');
+				} catch {}
 			};
 		}
 
 		_returnToAi() {
 			this._liveChatActive = false;
 			this._liveChatSessionId = null;
-			if (this._ws) { this._ws.close(); this._ws = null; }
-			try { sessionStorage.removeItem('docqa-live-session'); } catch {}
+			if (this._ws) {
+				this._ws.close();
+				this._ws = null;
+			}
+			try {
+				sessionStorage.removeItem('docqa-live-session');
+			} catch {}
 			this._updateModeBar();
 		}
 
@@ -1389,7 +1440,7 @@
 				btn.textContent = t('switchToHuman');
 				btn.onclick = async () => {
 					try {
-						const config = this._haConfig || await api.getHumanAgentConfig();
+						const config = this._haConfig || (await api.getHumanAgentConfig());
 						if (config && config.mode && config.mode !== 'disabled') {
 							this._appendMsg('user', t('switchToHuman'));
 							await this._handleHumanAgentTrigger(config);
@@ -1406,7 +1457,7 @@
 
 			// 人工客服关键词检测
 			const lowerText = text.toLowerCase().trim();
-			const isHumanTrigger = HUMAN_AGENT_TRIGGERS.some(kw => lowerText === kw || lowerText.includes(kw));
+			const isHumanTrigger = HUMAN_AGENT_TRIGGERS.some((kw) => lowerText === kw || lowerText.includes(kw));
 			if (isHumanTrigger && !this._liveChatActive) {
 				try {
 					const haConfig = await api.getHumanAgentConfig();
@@ -1418,7 +1469,7 @@
 						return;
 					}
 				} catch (e) {
-					console.error('[DocQA] Human agent config check failed:', e);
+					console.error('[Webnav.ai] Human agent config check failed:', e);
 				}
 				// disabled 或出错：继续走正常 AI 流程
 			}
@@ -1525,11 +1576,16 @@
 					this.$.messages.innerHTML = '';
 					var dWrap = document.createElement('div');
 					dWrap.className = 'quota-exceeded-wrap';
-					dWrap.innerHTML = '<div class="quota-exceeded">' +
+					dWrap.innerHTML =
+						'<div class="quota-exceeded">' +
 						'<div class="quota-icon">🔒</div>' +
-						'<div class="quota-title">' + t('domainNotFoundTitle') + '</div>' +
-						'<div class="quota-desc">' + t('domainNotFoundDesc') + '</div>' +
-					'</div>';
+						'<div class="quota-title">' +
+						t('domainNotFoundTitle') +
+						'</div>' +
+						'<div class="quota-desc">' +
+						t('domainNotFoundDesc') +
+						'</div>' +
+						'</div>';
 					this.$.messages.appendChild(dWrap);
 					this.$.textarea.disabled = true;
 					this.$.textarea.placeholder = t('domainNotFoundTitle');
@@ -1579,7 +1635,9 @@
 							var d = new Date(res.updatedAt.replace(' ', 'T') + 'Z');
 							if (isNaN(d.getTime())) return res.updatedAt;
 							return d.toLocaleString();
-						} catch(e) { return res.updatedAt; }
+						} catch (e) {
+							return res.updatedAt;
+						}
 					})();
 					el.textContent = t('ragSyncTime') + localTime;
 				} else {
@@ -1592,7 +1650,7 @@
 
 		_updateThemeButtons() {
 			var isDark = this.classList.contains('dark');
-			this.shadowRoot.querySelectorAll('.settings-theme-btn').forEach(function(btn) {
+			this.shadowRoot.querySelectorAll('.settings-theme-btn').forEach(function (btn) {
 				var active = (btn.getAttribute('data-theme') === 'dark') === isDark;
 				btn.classList.toggle('active', active);
 			});
@@ -1660,7 +1718,7 @@
 	const shouldExclude = (() => {
 		if (!excludeAttr) return false;
 		const path = window.location.pathname;
-		return excludeAttr.split(',').some(pattern => {
+		return excludeAttr.split(',').some((pattern) => {
 			const p = pattern.trim();
 			if (!p) return false;
 			if (p.endsWith('*')) {

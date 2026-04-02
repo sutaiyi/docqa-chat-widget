@@ -1,13 +1,13 @@
-# DocQA – Free AI Customer Support Chatbot Widget
+# Webnav.ai – Free AI Customer Support Chatbot Widget
 
 > Free, open-source AI chatbot widget for websites. One line of code adds 24/7 AI customer service to any site. Powered by RAG (Retrieval-Augmented Generation).
 
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
-[![Website](https://img.shields.io/badge/website-docqa.xyz-blue)](https://docqa.xyz)
+[![Website](https://img.shields.io/badge/website-webnav.ai-blue)](https://www.webnav.ai)
 
-**[Official Website](https://docqa.xyz)** | **[Documentation](https://docs.docqa.xyz)** | **[Live Demo](https://docqa.xyz)** | [English](#features) | [中文](#中文)
+**[Official Website](https://www.webnav.ai)** | **[Documentation](https://docs.webnav.ai)** | **[Live Demo](https://www.webnav.ai)** | [English](#features) | [中文](#中文)
 
-## Why DocQA?
+## Why Webnav.ai?
 
 - **100% Free tier** — No credit card, no trial period, free forever
 - **Zero training needed** — AI auto-learns your website content via RAG
@@ -32,26 +32,22 @@
 ## Quick Start
 
 ```html
-<script
-  src="https://widget.docqa.xyz/widget/chat-widget.js"
-  data-base-url="https://yoursite.com"
-  data-theme="dark"
-></script>
+<script src="https://widget.webnav.ai/widget/chat-widget.js" data-base-url="https://yoursite.com" data-theme="dark"></script>
 ```
 
 That's it. A chat bubble appears on your website with AI-powered customer support.
 
 ## Configuration
 
-| Attribute | Description | Example |
-|-----------|-------------|---------|
-| `data-server` | Backend API URL (defaults to widget origin) | `https://widget.docqa.xyz` |
-| `data-base-url` | Website URL(s) for AI to learn. Comma-separated for multi-domain. | `https://a.com,https://b.com` |
-| `data-theme` | Theme: `light` or `dark` | `dark` |
-| `data-lang` | Force language: `zh` / `en` / `ja` / `ko` | `en` |
-| `data-logo` | Custom logo URL | `https://yoursite.com/logo.png` |
-| `data-mode` | Set to `fullscreen` for mobile WebView | `fullscreen` |
-| `data-exclude` | Routes to hide widget (comma-separated, `*` wildcard) | `/admin/*,/login` |
+| Attribute       | Description                                                       | Example                         |
+| --------------- | ----------------------------------------------------------------- | ------------------------------- |
+| `data-server`   | Backend API URL (defaults to widget origin)                       | `https://widget.webnav.ai`      |
+| `data-base-url` | Website URL(s) for AI to learn. Comma-separated for multi-domain. | `https://a.com,https://b.com`   |
+| `data-theme`    | Theme: `light` or `dark`                                          | `dark`                          |
+| `data-lang`     | Force language: `zh` / `en` / `ja` / `ko`                         | `en`                            |
+| `data-logo`     | Custom logo URL                                                   | `https://yoursite.com/logo.png` |
+| `data-mode`     | Set to `fullscreen` for mobile WebView                            | `fullscreen`                    |
+| `data-exclude`  | Routes to hide widget (comma-separated, `*` wildcard)             | `/admin/*,/login`               |
 
 ## Use Cases
 
@@ -64,18 +60,21 @@ That's it. A chat bubble appears on your website with AI-powered customer suppor
 ## Multi-Platform Integration
 
 ### Web (Any website)
+
 ```html
-<script src="https://widget.docqa.xyz/widget/chat-widget.js" data-base-url="https://yoursite.com"></script>
+<script src="https://widget.webnav.ai/widget/chat-widget.js" data-base-url="https://yoursite.com"></script>
 ```
 
 ### Android (WebView)
+
 ```kotlin
-webView.loadUrl("https://widget.docqa.xyz/widget/mobile.html")
+webView.loadUrl("https://widget.webnav.ai/widget/mobile.html")
 ```
 
 ### iOS (WKWebView)
+
 ```swift
-let url = URL(string: "https://widget.docqa.xyz/widget/mobile.html")!
+let url = URL(string: "https://widget.webnav.ai/widget/mobile.html")!
 webView.load(URLRequest(url: url))
 ```
 
@@ -90,6 +89,7 @@ User asks a question
 ```
 
 **Key technologies:**
+
 - **RAG** (Retrieval-Augmented Generation) for accurate, grounded answers
 - **Shadow DOM** for style isolation
 - **IndexedDB** for local chat history storage
@@ -98,28 +98,28 @@ User asks a question
 
 ## Comparison with Alternatives
 
-| Feature | DocQA | Intercom | Drift | Tidio |
-|---------|-------|----------|-------|-------|
-| Free tier | Forever free | 14-day trial | Limited | Limited |
-| AI auto-learns site | Yes | No | No | No |
-| RAG search | Yes | No | No | No |
-| Self-hosted | Yes | No | No | No |
-| Open source | Yes | No | No | No |
-| One-line setup | Yes | No | No | No |
+| Feature             | Webnav.ai    | Intercom     | Drift   | Tidio   |
+| ------------------- | ------------ | ------------ | ------- | ------- |
+| Free tier           | Forever free | 14-day trial | Limited | Limited |
+| AI auto-learns site | Yes          | No           | No      | No      |
+| RAG search          | Yes          | No           | No      | No      |
+| Self-hosted         | Yes          | No           | No      | No      |
+| Open source         | Yes          | No           | No      | No      |
+| One-line setup      | Yes          | No           | No      | No      |
 
 ## Files
 
-| File | Description |
-|------|-------------|
-| `chat-widget.js` | Main widget (Shadow DOM, streaming, i18n, RAG, sample questions) |
-| `chat-widget.css` | Styles (themes, responsive, dark mode, typing animation) |
-| `mobile.html` | Fullscreen mode for mobile WebView integration |
+| File              | Description                                                      |
+| ----------------- | ---------------------------------------------------------------- |
+| `chat-widget.js`  | Main widget (Shadow DOM, streaming, i18n, RAG, sample questions) |
+| `chat-widget.css` | Styles (themes, responsive, dark mode, typing animation)         |
+| `mobile.html`     | Fullscreen mode for mobile WebView integration                   |
 
 ## Links
 
-- [Official Website](https://docqa.xyz) — Product overview, pricing, live demo
-- [Full Documentation](https://docs.docqa.xyz) — Integration guides, API reference
-- [Quick Start Guide](https://docs.docqa.xyz/en/quickstart)
+- [Official Website](https://www.webnav.ai) — Product overview, pricing, live demo
+- [Full Documentation](https://docs.webnav.ai) — Integration guides, API reference
+- [Quick Start Guide](https://docs.webnav.ai/en/quickstart)
 
 ## Contributing
 
@@ -133,11 +133,11 @@ Contributions are welcome! Please open an issue or submit a pull request.
 
 ## 中文
 
-### DocQA — 免费开源 AI 智能客服组件
+### Webnav.ai — 免费开源 AI 智能客服组件
 
 > 免费、开源的 AI 客服系统。一行代码为任何网站添加 AI 智能客服，基于 RAG 语义检索，自动学习网站内容，7×24 全天候为访客提供专业解答。
 
-### 为什么选择 DocQA？
+### 为什么选择 Webnav.ai？
 
 - **完全免费** — 无需信用卡，无试用期限制，永久免费
 - **零训练成本** — AI 通过 RAG 自动学习网站内容，无需人工上传文档
@@ -160,11 +160,7 @@ Contributions are welcome! Please open an issue or submit a pull request.
 ### 快速开始
 
 ```html
-<script
-  src="https://widget.docqa.xyz/widget/chat-widget.js"
-  data-base-url="https://yoursite.com"
-  data-theme="dark"
-></script>
+<script src="https://widget.webnav.ai/widget/chat-widget.js" data-base-url="https://yoursite.com" data-theme="dark"></script>
 ```
 
 ### 适用场景
@@ -177,9 +173,9 @@ Contributions are welcome! Please open an issue or submit a pull request.
 
 ### 相关链接
 
-- [官方网站](https://docqa.xyz) — 产品介绍、定价、在线体验
-- [完整文档](https://docs.docqa.xyz) — 接入指南、API 参考
-- [快速开始](https://docs.docqa.xyz/zh/quickstart)
+- [官方网站](https://www.webnav.ai) — 产品介绍、定价、在线体验
+- [完整文档](https://docs.webnav.ai) — 接入指南、API 参考
+- [快速开始](https://docs.webnav.ai/zh/quickstart)
 
 ### 开源协议
 
