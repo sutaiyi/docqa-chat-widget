@@ -121,77 +121,6 @@
 			ticketSuccess: 'Ticket submitted! Our team will reach out to you shortly.',
 			ticketError: 'Submission failed. Please try again.'
 		},
-		zh: {
-			headerTitle: 'AI 智能客服',
-			newChat: '新对话',
-			newSession: '+ 新建对话',
-			inputPlaceholder: '输入消息...',
-			emptyState: '有什么可以帮您的？',
-			typing: '正在输入...',
-			errorReply: '抱歉，发生了错误，请稍后重试。',
-			noSessions: '暂无历史会话',
-			historySessions: '历史会话',
-			themeToggle: '主题',
-			historyBtn: '历史会话',
-			settingsBtn: '设置',
-			quotaTitle: '对话次数已用完',
-			quotaDesc: '本月已使用 {used} / {limit} 次对话。',
-			quotaUpgrade: '升级套餐 →',
-			quotaDisabled: '对话次数已用完，升级套餐以继续使用。',
-			domainNotFoundTitle: '域名未配置',
-			domainNotFoundDesc: '此域名未关联到有效账户，请在控制台添加域名。',
-			ragSyncLabel: '知识库',
-			ragSyncLoading: '加载中...',
-			ragSyncTime: '最近更新：',
-			ragSyncPages: ' 个页面',
-			ragSyncNone: '尚未同步',
-			closeBtn: '关闭',
-			sendBtn: '发送',
-			deleteBtn: '删除',
-			loadingTitle: '正在准备智能客服',
-			loadingSubtitle: '首次使用需要学习网站内容<br>通常需要 1~2 分钟，请稍候',
-			loadingInit: '正在初始化...',
-			loadingStarting: '正在启动...',
-			loadingLearning: (url, pages) => `正在学习 ${url}（已收录 ${pages} 页）`,
-			loadingLearningGeneral: (pages) => `正在学习网站内容...（已收录 ${pages} 页）`,
-			loadingRetrying: (n, max) => `正在重试（第 ${n}/${max} 次）...`,
-			loadingFailed: '获取网站内容失败，请稍后再试',
-			loadingRetryBtn: '重新尝试',
-			loadingRetryText: '正在重新尝试...',
-			deniedTitle: '未授权使用',
-			deniedText: (domain) => `当前域名 <strong class="denied-domain">${domain}</strong> 未获得智能客服服务授权。`,
-			deniedCta: '立即开通 →',
-			sampleQuestionsLoading: '正在生成推荐问题...',
-			humanAgentContact: '请通过以下方式联系客服：',
-			humanAgentWaiting: '正在连接人工客服...',
-			humanAgentQueue: (pos) => `排队位置：第 ${pos} 位`,
-			humanAgentEstWait: (min) => `预计等待：约 ${min} 分钟`,
-			humanAgentConnected: '人工客服已接入',
-			humanAgentDisconnected: '客服已断开连接',
-			returnToAi: '返回 AI 客服',
-			humanAgentNotified: '我们已收到您的请求，客服将尽快与您联系。',
-			phone: '电话',
-			email: '邮箱',
-			wechat: '微信',
-			telegram: 'Telegram',
-			idleWarning: '长时间未发送消息，连接将在 1 分钟后自动断开',
-			idleTimeout: '会话因超时已自动断开',
-			keepAlive: '继续会话',
-			switchToAi: '切换到 AI',
-			switchToHuman: '转人工',
-			modeAi: 'AI 客服',
-			modeHumanConnected: '人工客服已连接',
-			modeHumanWaiting: '等待人工客服...',
-			restoring: '正在恢复连接...',
-			switchConfirm: '正在人工客服中，切换将断开连接，是否继续？',
-			ticketTitle: '提交工单',
-			ticketContact: '您的联系方式（手机/邮箱/微信）',
-			ticketDesc: '请描述您的问题',
-			ticketSubmit: '提交工单',
-			ticketSubmitting: '提交中...',
-			ticketSuccess: '工单已提交，客服将尽快通过您留下的联系方式与您联系。',
-			ticketError: '提交失败，请稍后重试'
-		},
 		ja: {
 			headerTitle: 'AI サポート',
 			newChat: '新しい会話',
@@ -333,6 +262,148 @@
 			ticketSubmitting: '제출 중...',
 			ticketSuccess: '티켓이 제출되었습니다. 곧 연락드리겠습니다.',
 			ticketError: '제출에 실패했습니다. 다시 시도해 주세요.'
+		},
+		zh: {
+			headerTitle: 'AI 客服',
+			newChat: '新对话',
+			newSession: '+ 新对话',
+			inputPlaceholder: '输入消息...',
+			emptyState: '有什么可以帮您的吗？',
+			typing: '输入中...',
+			errorReply: '抱歉，发生错误，请稍后再试。',
+			noSessions: '没有对话记录',
+			historySessions: '对话记录',
+			themeToggle: '主题',
+			historyBtn: '记录',
+			settingsBtn: '设置',
+			quotaTitle: '已达对话上限',
+			quotaDesc: '本月已使用 {used} / {limit} 次对话。',
+			quotaUpgrade: '升级方案 →',
+			quotaDisabled: '已达对话上限，请升级以继续使用。',
+			domainNotFoundTitle: '域名未配置',
+			domainNotFoundDesc: '此域名未绑定有效账户。',
+			ragSyncLabel: '知识库',
+			ragSyncLoading: '加载中...',
+			ragSyncTime: '最后更新：',
+			ragSyncPages: ' 页',
+			ragSyncNone: '尚未同步',
+			closeBtn: '关闭',
+			sendBtn: '发送',
+			deleteBtn: '删除',
+			loadingTitle: '正在准备 AI 助手',
+			loadingSubtitle: '首次使用需要学习网站内容。<br>通常需要 1-2 分钟。',
+			loadingInit: '初始化中...',
+			loadingStarting: '启动中...',
+			loadingLearning: (url, pages) => `正在学习 ${url}（已索引 ${pages} 页）`,
+			loadingLearningGeneral: (pages) => `正在学习网站内容...（已索引 ${pages} 页）`,
+			loadingRetrying: (n, max) => `重试中（第 ${n}/${max} 次）...`,
+			loadingFailed: '无法加载网站内容，请稍后再试。',
+			loadingRetryBtn: '重试',
+			loadingRetryText: '重试中...',
+			deniedTitle: '未授权',
+			deniedText: (domain) => `域名 <strong class="denied-domain">${domain}</strong> 未获授权使用此服务。`,
+			deniedCta: '立即开始 →',
+			sampleQuestionsLoading: '加载建议中...',
+			humanAgentContact: '联系我们的客服团队：',
+			humanAgentWaiting: '正在连接客服人员...',
+			humanAgentQueue: (pos) => `等候位置：第 ${pos} 位`,
+			humanAgentEstWait: (min) => `预计等候时间：约 ${min} 分钟`,
+			humanAgentConnected: '客服人员已连接',
+			humanAgentDisconnected: '客服人员已断开',
+			returnToAi: '返回 AI',
+			humanAgentNotified: '已收到您的请求，客服人员将尽快与您联系。',
+			phone: '电话',
+			email: '邮箱',
+			wechat: '微信',
+			telegram: 'Telegram',
+			idleWarning: '长时间未收到消息，连接将在 1 分钟后关闭。',
+			idleTimeout: '因闲置过久，连接已关闭。',
+			keepAlive: '保持连接',
+			switchToAi: '切换至 AI',
+			switchToHuman: '人工客服',
+			modeAi: 'AI 客服',
+			modeHumanConnected: '人工客服已连接',
+			modeHumanWaiting: '等待客服中...',
+			restoring: '正在恢复连接...',
+			switchConfirm: '您正在实时对话中，切换将会断开连接。是否继续？',
+			ticketTitle: '提交工单',
+			ticketContact: '联系方式（电话/邮箱/微信）',
+			ticketDesc: '请描述您的问题',
+			ticketSubmit: '提交工单',
+			ticketSubmitting: '提交中...',
+			ticketSuccess: '工单已提交！客服人员将尽快与您联系。',
+			ticketError: '提交失败，请重试。'
+		},
+		zht: {
+			headerTitle: 'AI 客服',
+			newChat: '新對話',
+			newSession: '+ 新對話',
+			inputPlaceholder: '輸入訊息...',
+			emptyState: '有什麼可以幫您的嗎？',
+			typing: '輸入中...',
+			errorReply: '抱歉，發生錯誤，請稍後再試。',
+			noSessions: '沒有對話紀錄',
+			historySessions: '對話紀錄',
+			themeToggle: '主題',
+			historyBtn: '紀錄',
+			settingsBtn: '設定',
+			quotaTitle: '已達對話上限',
+			quotaDesc: '本月已使用 {used} / {limit} 次對話。',
+			quotaUpgrade: '升級方案 →',
+			quotaDisabled: '已達對話上限，請升級以繼續使用。',
+			domainNotFoundTitle: '網域未設定',
+			domainNotFoundDesc: '此網域未綁定有效帳戶。',
+			ragSyncLabel: '知識庫',
+			ragSyncLoading: '載入中...',
+			ragSyncTime: '最後更新：',
+			ragSyncPages: ' 頁',
+			ragSyncNone: '尚未同步',
+			closeBtn: '關閉',
+			sendBtn: '發送',
+			deleteBtn: '刪除',
+			loadingTitle: '正在準備 AI 助手',
+			loadingSubtitle: '首次使用需要學習網站內容。<br>通常需要 1-2 分鐘。',
+			loadingInit: '初始化中...',
+			loadingStarting: '啟動中...',
+			loadingLearning: (url, pages) => `正在學習 ${url}（已索引 ${pages} 頁）`,
+			loadingLearningGeneral: (pages) => `正在學習網站內容...（已索引 ${pages} 頁）`,
+			loadingRetrying: (n, max) => `重試中（第 ${n}/${max} 次）...`,
+			loadingFailed: '無法載入網站內容，請稍後再試。',
+			loadingRetryBtn: '重試',
+			loadingRetryText: '重試中...',
+			deniedTitle: '未授權',
+			deniedText: (domain) => `網域 <strong class="denied-domain">${domain}</strong> 未獲授權使用此服務。`,
+			deniedCta: '立即開始 →',
+			sampleQuestionsLoading: '載入建議中...',
+			humanAgentContact: '聯繫我們的客服團隊：',
+			humanAgentWaiting: '正在連接客服人員...',
+			humanAgentQueue: (pos) => `等候位置：第 ${pos} 位`,
+			humanAgentEstWait: (min) => `預計等候時間：約 ${min} 分鐘`,
+			humanAgentConnected: '客服人員已連接',
+			humanAgentDisconnected: '客服人員已斷開',
+			returnToAi: '返回 AI',
+			humanAgentNotified: '已收到您的請求，客服人員將盡快與您聯繫。',
+			phone: '電話',
+			email: '電子郵件',
+			wechat: 'WeChat',
+			telegram: 'Telegram',
+			idleWarning: '長時間未收到訊息，連接將在 1 分鐘後關閉。',
+			idleTimeout: '因閒置過久，連線已關閉。',
+			keepAlive: '保持連接',
+			switchToAi: '切換至 AI',
+			switchToHuman: '真人客服',
+			modeAi: 'AI 客服',
+			modeHumanConnected: '真人客服已連接',
+			modeHumanWaiting: '等待客服中...',
+			restoring: '正在恢復連接...',
+			switchConfirm: '您正在即時對話中，切換將會斷開連接。是否繼續？',
+			ticketTitle: '提交工單',
+			ticketContact: '聯繫方式（電話/電郵/WeChat）',
+			ticketDesc: '請描述您的問題',
+			ticketSubmit: '提交工單',
+			ticketSubmitting: '提交中...',
+			ticketSuccess: '工單已提交！客服人員將盡快與您聯繫。',
+			ticketError: '提交失敗，請重試。'
 		}
 	};
 
@@ -341,7 +412,15 @@
 		const attr = scriptTag && scriptTag.getAttribute('data-lang');
 		const htmlLang = document.documentElement.lang;
 		const raw = attr || htmlLang || navigator.language || 'en';
-		const code = raw.toLowerCase().split('-')[0]; // 'zh-CN' → 'zh'
+		const lower = raw.toLowerCase();
+		// Exact code match (e.g. data-lang="zht", "zh", "en")
+		if (LANGS[lower]) return lower;
+		// Map zh variants: zh-TW/zh-HK/zh-Hant → zht, zh-CN/zh-Hans/zh → zh
+		if (lower.startsWith('zh')) {
+			if (lower.includes('tw') || lower.includes('hk') || lower.includes('hant') || lower.includes('mo')) return 'zht';
+			return 'zh';
+		}
+		const code = lower.split('-')[0];
 		return LANGS[code] ? code : 'en';
 	}
 
@@ -686,6 +765,8 @@
 			} else if (localStorage.getItem('chat-widget-theme') === 'dark') {
 				this.classList.add('dark');
 			}
+			// 提前获取主题策略，确保气泡球显示正确主题
+			this._applyThemePolicyEarly();
 			if (this._fullscreen) {
 				this.$.fab.classList.add('hidden');
 				this.$.win.classList.remove('hidden');
@@ -693,6 +774,15 @@
 				const closeBtn = this.shadowRoot.querySelector('.btn-close');
 				if (closeBtn) closeBtn.style.display = 'none';
 				this._open();
+			}
+		}
+
+		async _applyThemePolicyEarly() {
+			try {
+				const status = await api.cacheStatus();
+				this._applyThemePolicy(status.themeSwitch);
+			} catch {
+				this._applyThemePolicy(false);
 			}
 		}
 
@@ -943,6 +1033,8 @@
 					this._startPolling();
 				}
 			} catch {
+				// API 失败时强制 light 主题（免费用户兜底）
+				this._applyThemePolicy(false);
 				this._showChatView();
 			}
 		}
