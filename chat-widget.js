@@ -15,7 +15,8 @@
 	// API 服务地址（可通过 data-server 覆盖，默认跟脚本同域）
 	const SERVER = (scriptTag && scriptTag.getAttribute('data-server')) || SCRIPT_ORIGIN;
 	// data-base-url 支持逗号分隔多个 URL，第一个为主域名
-	const BASE_URLS = ((scriptTag && scriptTag.getAttribute('data-base-url')) || window.location.origin)
+	const BASE_URL_ATTR = scriptTag && scriptTag.getAttribute('data-base-url');
+	const BASE_URLS = (BASE_URL_ATTR || window.location.origin)
 		.split(',')
 		.map(function (u) {
 			return u.trim().replace(/\/+$/, '');
@@ -29,8 +30,9 @@
 			return window.location.hostname;
 		}
 	})();
-	// 所有配置的 URL（传给后端用于多域名抓取）
-	const ALL_BASE_URLS = BASE_URLS.length > 1 ? BASE_URLS.join(',') : '';
+	// 只要用户显式配置了 data-base-url，就完整传给后端，由用户控制抓取目标；
+	// 未配置时传空字符串，后端走默认的"当前域名 + docs.{顶级域名}"行为。
+	const ALL_BASE_URLS = BASE_URL_ATTR ? BASE_URLS.join(',') : '';
 	const SITE_LOGO = (() => {
 		if (scriptTag && scriptTag.getAttribute('data-logo')) return scriptTag.getAttribute('data-logo');
 		const link = document.querySelector('link[rel*="icon"]');
@@ -445,6 +447,12 @@
 			}
 		}
 	}).observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
+
+	// HTML 转义，防止 XSS
+	function escHtml(str) {
+		if (!str) return '';
+		return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+	}
 
 	// 示例问题缓存
 	let _sampleQuestionsCache = null;
@@ -1041,26 +1049,27 @@
 
 		_disableForQuota(used, limit) {
 			// 隐藏聊天消息区和输入区，显示居中的超限提示
-			this.$.messages.innerHTML = '';
+			this.$.messages.replaceChildren();
 			var wrap = document.createElement('div');
 			wrap.className = 'quota-exceeded-wrap';
-			wrap.innerHTML =
-				'<div class="quota-exceeded">' +
-				'<div class="quota-icon">⚠️</div>' +
-				'<div class="quota-title">' +
-				t('quotaTitle') +
-				'</div>' +
-				'<div class="quota-desc">' +
-				t('quotaDesc')
-					.replace('{used}', String(used || 0))
-					.replace('{limit}', String(limit || 0)) +
-				'</div>' +
-				'<a class="quota-upgrade" href="' +
-				(this._siteUrl || 'https://www.webnav.ai') +
-				'/dashboard/upgrade" target="_blank">' +
-				t('quotaUpgrade') +
-				'</a>' +
-				'</div>';
+			var inner = document.createElement('div');
+			inner.className = 'quota-exceeded';
+			var iconEl = document.createElement('div');
+			iconEl.className = 'quota-icon';
+			iconEl.textContent = '⚠️';
+			var titleEl = document.createElement('div');
+			titleEl.className = 'quota-title';
+			titleEl.textContent = t('quotaTitle');
+			var descEl = document.createElement('div');
+			descEl.className = 'quota-desc';
+			descEl.textContent = t('quotaDesc').replace('{used}', String(used || 0)).replace('{limit}', String(limit || 0));
+			var link = document.createElement('a');
+			link.className = 'quota-upgrade';
+			link.href = (this._siteUrl || 'https://www.webnav.ai') + '/dashboard/upgrade';
+			link.target = '_blank';
+			link.textContent = t('quotaUpgrade');
+			inner.append(iconEl, titleEl, descEl, link);
+			wrap.appendChild(inner);
 			this.$.messages.appendChild(wrap);
 			// 禁用输入
 			this.$.textarea.disabled = true;
@@ -1229,13 +1238,16 @@
 			}
 
 			const picked = pickRandom(allQuestions, 3);
-			container.innerHTML = picked.map((q) => `<button class="sample-question">${q}</button>`).join('');
-
-			container.querySelectorAll('.sample-question').forEach((btn) => {
+			container.innerHTML = '';
+			picked.forEach((q) => {
+				const btn = document.createElement('button');
+				btn.className = 'sample-question';
+				btn.textContent = q;
 				btn.onclick = () => {
-					this.$.textarea.value = btn.textContent;
+					this.$.textarea.value = q;
 					this._send();
 				};
+				container.appendChild(btn);
 			});
 		}
 
@@ -1288,13 +1300,13 @@
 					const c = config.contacts;
 					const items = [];
 					if (c.phone)
-						items.push(`<div class="ha-contact-item"><span class="ha-icon">📞</span><span class="ha-label">${t('phone')}</span><a href="tel:${c.phone}">${c.phone}</a></div>`);
+						items.push(`<div class="ha-contact-item"><span class="ha-icon">📞</span><span class="ha-label">${t('phone')}</span><a href="tel:${escHtml(c.phone)}">${escHtml(c.phone)}</a></div>`);
 					if (c.email)
-						items.push(`<div class="ha-contact-item"><span class="ha-icon">📧</span><span class="ha-label">${t('email')}</span><a href="mailto:${c.email}">${c.email}</a></div>`);
-					if (c.wechat) items.push(`<div class="ha-contact-item"><span class="ha-icon">💬</span><span class="ha-label">${t('wechat')}</span><span>${c.wechat}</span></div>`);
+						items.push(`<div class="ha-contact-item"><span class="ha-icon">📧</span><span class="ha-label">${t('email')}</span><a href="mailto:${escHtml(c.email)}">${escHtml(c.email)}</a></div>`);
+					if (c.wechat) items.push(`<div class="ha-contact-item"><span class="ha-icon">💬</span><span class="ha-label">${t('wechat')}</span><span>${escHtml(c.wechat)}</span></div>`);
 					if (c.telegram)
 						items.push(
-							`<div class="ha-contact-item"><span class="ha-icon">✈️</span><span class="ha-label">${t('telegram')}</span><a href="https://t.me/${c.telegram.replace('@', '')}" target="_blank">${c.telegram}</a></div>`
+							`<div class="ha-contact-item"><span class="ha-icon">✈️</span><span class="ha-label">${t('telegram')}</span><a href="https://t.me/${escHtml(c.telegram.replace('@', ''))}" target="_blank">${escHtml(c.telegram)}</a></div>`
 						);
 
 					const cardHtml = `<div class="ha-contact-card"><div class="ha-contact-title">${t('humanAgentContact')}</div>${items.join('')}<div class="ha-contact-note">${t('humanAgentNotified')}</div></div>`;
@@ -1319,13 +1331,13 @@
 						const c = config.contacts;
 						const items = [];
 						if (c.phone)
-							items.push(`<div class="ha-contact-item"><span class="ha-icon">📞</span><span class="ha-label">${t('phone')}</span><a href="tel:${c.phone}">${c.phone}</a></div>`);
+							items.push(`<div class="ha-contact-item"><span class="ha-icon">📞</span><span class="ha-label">${t('phone')}</span><a href="tel:${escHtml(c.phone)}">${escHtml(c.phone)}</a></div>`);
 						if (c.email)
-							items.push(`<div class="ha-contact-item"><span class="ha-icon">📧</span><span class="ha-label">${t('email')}</span><a href="mailto:${c.email}">${c.email}</a></div>`);
-						if (c.wechat) items.push(`<div class="ha-contact-item"><span class="ha-icon">💬</span><span class="ha-label">${t('wechat')}</span><span>${c.wechat}</span></div>`);
+							items.push(`<div class="ha-contact-item"><span class="ha-icon">📧</span><span class="ha-label">${t('email')}</span><a href="mailto:${escHtml(c.email)}">${escHtml(c.email)}</a></div>`);
+						if (c.wechat) items.push(`<div class="ha-contact-item"><span class="ha-icon">💬</span><span class="ha-label">${t('wechat')}</span><span>${escHtml(c.wechat)}</span></div>`);
 						if (c.telegram)
 							items.push(
-								`<div class="ha-contact-item"><span class="ha-icon">✈️</span><span class="ha-label">${t('telegram')}</span><a href="https://t.me/${c.telegram.replace('@', '')}" target="_blank">${c.telegram}</a></div>`
+								`<div class="ha-contact-item"><span class="ha-icon">✈️</span><span class="ha-label">${t('telegram')}</span><a href="https://t.me/${escHtml(c.telegram.replace('@', ''))}" target="_blank">${escHtml(c.telegram)}</a></div>`
 							);
 						if (items.length > 0) {
 							contactHtml = `<div class="ha-contact-card" style="margin-bottom:12px"><div class="ha-contact-title">${t('humanAgentContact')}</div>${items.join('')}</div>`;
@@ -1355,18 +1367,26 @@
 		_showTicketForm() {
 			const div = document.createElement('div');
 			div.className = 'msg assistant';
-			div.innerHTML = `<div class="ha-ticket-form">
-				<div class="ha-ticket-title">${t('ticketTitle')}</div>
-				<input class="ha-ticket-input" type="text" placeholder="${t('ticketContact')}" />
-				<textarea class="ha-ticket-textarea" placeholder="${t('ticketDesc')}" rows="3"></textarea>
-				<button class="ha-ticket-btn">${t('ticketSubmit')}</button>
-			</div>`;
+			const form = document.createElement('div');
+			form.className = 'ha-ticket-form';
+			const title = document.createElement('div');
+			title.className = 'ha-ticket-title';
+			title.textContent = t('ticketTitle');
+			const contactInput = document.createElement('input');
+			contactInput.className = 'ha-ticket-input';
+			contactInput.type = 'text';
+			contactInput.placeholder = t('ticketContact');
+			const descInput = document.createElement('textarea');
+			descInput.className = 'ha-ticket-textarea';
+			descInput.placeholder = t('ticketDesc');
+			descInput.rows = 3;
+			const btn = document.createElement('button');
+			btn.className = 'ha-ticket-btn';
+			btn.textContent = t('ticketSubmit');
+			form.append(title, contactInput, descInput, btn);
+			div.appendChild(form);
 			this.$.messages.appendChild(div);
 			this.$.messages.scrollTop = this.$.messages.scrollHeight;
-
-			const btn = div.querySelector('.ha-ticket-btn');
-			const contactInput = div.querySelector('.ha-ticket-input');
-			const descInput = div.querySelector('.ha-ticket-textarea');
 
 			btn.onclick = async () => {
 				const contact = contactInput.value.trim();
@@ -1376,7 +1396,13 @@
 				btn.disabled = true;
 				const res = await api.submitTicket(contact, desc);
 				if (res.ok) {
-					div.innerHTML = `<div class="ha-ticket-form"><div class="ha-ticket-success">${t('ticketSuccess')}</div></div>`;
+					const successForm = document.createElement('div');
+					successForm.className = 'ha-ticket-form';
+					const successMsg = document.createElement('div');
+					successMsg.className = 'ha-ticket-success';
+					successMsg.textContent = t('ticketSuccess');
+					successForm.appendChild(successMsg);
+					div.replaceChildren(successForm);
 					// 存到历史
 					if (this.currentSessionId) {
 						await db.addMessage(this.currentSessionId, 'assistant', t('ticketSuccess'));
@@ -1471,34 +1497,48 @@
 			div.className = 'msg assistant';
 
 			if (type === 'disconnected') {
-				div.innerHTML = `<div class="ha-status-card">
-					<div class="ha-status-icon">👋</div>
-					<div class="ha-status-text">${t('humanAgentDisconnected')}</div>
-					<div class="ha-status-hint">${t('modeAi')}</div>
-				</div>`;
+				const card = this._buildStatusCard('👋', t('humanAgentDisconnected'), t('modeAi'));
+				div.appendChild(card);
 			} else if (type === 'idle_warning') {
-				div.innerHTML = `<div class="ha-status-card ha-status-warning">
-					<div class="ha-status-icon">⏰</div>
-					<div class="ha-status-text">${t('idleWarning')}</div>
-					<button class="ha-status-btn">${t('keepAlive')}</button>
-				</div>`;
-				div.querySelector('.ha-status-btn').onclick = () => {
+				const card = this._buildStatusCard('⏰', t('idleWarning'), null, 'ha-status-warning');
+				const btn = document.createElement('button');
+				btn.className = 'ha-status-btn';
+				btn.textContent = t('keepAlive');
+				btn.onclick = () => {
 					if (this._ws && this._ws.readyState === WebSocket.OPEN) {
 						this._ws.send(JSON.stringify({ type: 'heartbeat' }));
 					}
 					div.remove();
 				};
+				card.appendChild(btn);
+				div.appendChild(card);
 			} else if (type === 'idle_timeout') {
-				div.innerHTML = `<div class="ha-status-card">
-					<div class="ha-status-icon">⏱️</div>
-					<div class="ha-status-text">${t('idleTimeout')}</div>
-					<div class="ha-status-hint">${t('modeAi')}</div>
-				</div>`;
+				const card = this._buildStatusCard('⏱️', t('idleTimeout'), t('modeAi'));
+				div.appendChild(card);
 				this._returnToAi();
 			}
 
 			this.$.messages.appendChild(div);
 			this.$.messages.scrollTop = this.$.messages.scrollHeight;
+		}
+
+		_buildStatusCard(icon, text, hint, extraClass) {
+			const card = document.createElement('div');
+			card.className = 'ha-status-card' + (extraClass ? ' ' + extraClass : '');
+			const iconEl = document.createElement('div');
+			iconEl.className = 'ha-status-icon';
+			iconEl.textContent = icon;
+			const textEl = document.createElement('div');
+			textEl.className = 'ha-status-text';
+			textEl.textContent = text;
+			card.append(iconEl, textEl);
+			if (hint) {
+				const hintEl = document.createElement('div');
+				hintEl.className = 'ha-status-hint';
+				hintEl.textContent = hint;
+				card.appendChild(hintEl);
+			}
+			return card;
 		}
 
 		_updateModeBar() {
@@ -1586,7 +1626,11 @@
 			if (empty) empty.remove();
 			const msgDiv = document.createElement('div');
 			msgDiv.className = 'msg assistant typing';
-			msgDiv.innerHTML = `${t('typing')}<span class="typing-dots"><span></span><span></span><span></span></span>`;
+			msgDiv.textContent = t('typing');
+			const dots = document.createElement('span');
+			dots.className = 'typing-dots';
+			dots.append(document.createElement('span'), document.createElement('span'), document.createElement('span'));
+			msgDiv.appendChild(dots);
 			this.$.messages.appendChild(msgDiv);
 			this.$.messages.scrollTop = this.$.messages.scrollHeight;
 
@@ -1665,19 +1709,22 @@
 					this._disableForQuota(parseInt(qParts[0]) || 0, parseInt(qParts[1]) || 0);
 				} else if (fullText === '__DOMAIN_NOT_FOUND__') {
 					msgDiv.remove();
-					this.$.messages.innerHTML = '';
+					this.$.messages.replaceChildren();
 					var dWrap = document.createElement('div');
 					dWrap.className = 'quota-exceeded-wrap';
-					dWrap.innerHTML =
-						'<div class="quota-exceeded">' +
-						'<div class="quota-icon">🔒</div>' +
-						'<div class="quota-title">' +
-						t('domainNotFoundTitle') +
-						'</div>' +
-						'<div class="quota-desc">' +
-						t('domainNotFoundDesc') +
-						'</div>' +
-						'</div>';
+					var dInner = document.createElement('div');
+					dInner.className = 'quota-exceeded';
+					var dIcon = document.createElement('div');
+					dIcon.className = 'quota-icon';
+					dIcon.textContent = '🔒';
+					var dTitle = document.createElement('div');
+					dTitle.className = 'quota-title';
+					dTitle.textContent = t('domainNotFoundTitle');
+					var dDesc = document.createElement('div');
+					dDesc.className = 'quota-desc';
+					dDesc.textContent = t('domainNotFoundDesc');
+					dInner.append(dIcon, dTitle, dDesc);
+					dWrap.appendChild(dInner);
 					this.$.messages.appendChild(dWrap);
 					this.$.textarea.disabled = true;
 					this.$.textarea.placeholder = t('domainNotFoundTitle');
@@ -1752,22 +1799,29 @@
 			this.$.settingsPanel.classList.add('hidden');
 			this.$.sidebar.classList.remove('hidden');
 			const sessions = await db.listSessions();
-			this.$.sessionList.innerHTML = '';
+			this.$.sessionList.replaceChildren();
 
 			if (sessions.length === 0) {
-				this.$.sessionList.innerHTML = `<div style="text-align:center;color:var(--text-secondary);padding:20px;font-size:13px;">${t('noSessions')}</div>`;
+				const empty = document.createElement('div');
+				empty.style.cssText = 'text-align:center;color:var(--text-secondary);padding:20px;font-size:13px;';
+				empty.textContent = t('noSessions');
+				this.$.sessionList.appendChild(empty);
 				return;
 			}
 
 			for (const s of sessions) {
 				const item = document.createElement('div');
 				item.className = `session-item${s.id === this.currentSessionId ? ' active' : ''}`;
-				item.innerHTML = `
-					<span class="session-item-title">${this._esc(s.title)}</span>
-					<button class="session-item-delete" title="删除">&times;</button>
-				`;
-				item.querySelector('.session-item-title').onclick = () => this._switchSession(s.id);
-				item.querySelector('.session-item-delete').onclick = async (e) => {
+				const titleSpan = document.createElement('span');
+				titleSpan.className = 'session-item-title';
+				titleSpan.textContent = s.title;
+				const delBtn = document.createElement('button');
+				delBtn.className = 'session-item-delete';
+				delBtn.title = '删除';
+				delBtn.textContent = '\u00D7';
+				item.append(titleSpan, delBtn);
+				titleSpan.onclick = () => this._switchSession(s.id);
+				delBtn.onclick = async (e) => {
 					e.stopPropagation();
 					await db.deleteSession(s.id);
 					item.remove();
