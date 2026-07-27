@@ -53,6 +53,7 @@
 	"files": [
 		"chat-widget.js",
 		"chat-widget.css",
-		"mobile.html"
+		"mobile.html",
+		"vendor/marked.min.js"
 	]
 }
